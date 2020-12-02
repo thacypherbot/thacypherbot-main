@@ -1,0 +1,14 @@
+{
+  "aac": {
+    "codec": "aac",
+    "format": "adts"
+  },
+  "opus": {
+    "codec": "libopus",
+    "format": "opus"
+  },
+  "mp3": {
+    "codec": "libmp3lame",
+    "format": "mp3"
+  }
+}

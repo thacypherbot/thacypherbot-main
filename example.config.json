@@ -1,0 +1,12 @@
+{
+    "token": {
+        "prod": "",
+        "test": ""
+    },
+    "prefix": "&",
+    "record_command": "record",
+    "stop_command": "stop",
+    "line_length_limit": 4,
+    "channel_name_log": ["freestyles", "gen-text", "bar-for-bar"],
+    "channel_admin_log_id" : "667154702349369348"
+}
