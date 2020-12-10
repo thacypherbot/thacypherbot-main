@@ -23,18 +23,16 @@ exports.run = async (client, message, args) => {
   if (foundDoc.isPoll) {
     askSettings
       .setDescription(
-        "When do you want to schedule this ? \n ``A`` - Start right now \n ``B`` - Schedule a time."
+        "When do you want to schedule this ? \n ``1`` - Start right now \n ``2`` - Schedule a time."
       )
       .setColor("#800080");
 
     let askTimeEmbed = await message.channel.send(askSettings);
-    await askTimeEmbed.react(`🇦`);
-    await askTimeEmbed.react(`🇧`);
     const reactfilter = (reaction, user) => {
       return user.id === message.author.id;
     };
-    let collected = await askTimeEmbed
-      .awaitReactions(reactfilter, {
+    let collected = await askTimeEmbed.channel
+      .awaitMessages(msgFilter, {
         max: 1,
         time: 200000,
         errors: ["time"],
@@ -44,9 +42,9 @@ exports.run = async (client, message, args) => {
         return message.channel.send(`invalid input`);
       });
 
-    if (collected.first().emoji.name === "🇦") {
+    if (collected.first().content === "1") {
       reactorSettings.startTime = 0;
-    } else if (collected.first().emoji.name === "🇧") {
+    } else if (collected.first().content === "2") {
       reactorSettings.scheduled = true;
       askSettings.setDescription(
         "Enter the day of the month you would want to schedule the poll."
@@ -56,6 +54,7 @@ exports.run = async (client, message, args) => {
         .awaitMessages(msgFilter, {
           max: 1,
           time: 200000,
+          errors: ["time"],
         })
         .catch((err) => {
           console.log(err);
@@ -93,14 +92,12 @@ exports.run = async (client, message, args) => {
     }
 
     askSettings.setDescription(
-      `When do you want to terminate the process of the reactor ? \n \`\`A\`\` - Schedule a time \n \`\`B\`\` - Custom - \`\`$reactorstop <reactoridhere>\`\``
+      `When do you want to terminate the process of the reactor ? \n \`\`1\`\` - Schedule a time \n \`\`2\`\` - Custom - \`\`$reactorstop <reactoridhere>\`\``
     );
 
     let askEndTimeEmbed = await message.channel.send(askSettings);
-    await askEndTimeEmbed.react(`🇦`);
-    await askEndTimeEmbed.react(`🇧`);
-    collected = await askEndTimeEmbed
-      .awaitReactions(reactfilter, {
+    collected = await askEndTimeEmbed.channel
+      .awaitMessages(msgFilter, {
         max: 1,
         time: 200000,
         errors: ["time"],
@@ -110,7 +107,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send(`invalid input`);
       });
 
-    if (collected.first().emoji.name === "🇦") {
+    if (collected.first().content === "1") {
       reactorSettings.endCustom = false;
       askSettings.setDescription(
         "Enter the day of the month you would want to terminate the poll."
@@ -155,6 +152,22 @@ exports.run = async (client, message, args) => {
         });
       reactorSettings.endTimeMinute = parseInt(collected.first().content);
     }
+    askSettings.setDescription(
+      "If you want people to cast multiple votes, reply with a ``yes`` else reply with a ``no``"
+    );
+    let askMultipleEmbed = await message.channel.send(askSettings);
+    collected = await askMultipleEmbed.channel
+      .awaitMessages(msgFilter, {
+        max: 1,
+        time: 200000,
+      })
+      .catch((err) => {
+        console.log(err);
+        return message.channel.send(`invalid input`);
+      });
+    reactorSettings.multiple =
+      collected.first().content === "yes" ? true : false;
+    reactorSettings.isPoll = true;
   }
   askSettings.setDescription(
     "In which channel do you want to initiate the reactor ?"
@@ -199,23 +212,6 @@ exports.run = async (client, message, args) => {
     return;
   }
   if (foundDoc.isPoll) {
-    askSettings.setDescription(
-      "If you want people to cast multiple votes, reply with a ``yes`` else reply with a ``no``"
-    );
-    let askMultipleEmbed = await message.channel.send(askSettings);
-    collected = await askMultipleEmbed.channel
-      .awaitMessages(msgFilter, {
-        max: 1,
-        time: 200000,
-      })
-      .catch((err) => {
-        console.log(err);
-        return message.channel.send(`invalid input`);
-      });
-    reactorSettings.multiple =
-      collected.first().content === "yes" ? true : false;
-    reactorSettings.isPoll = true;
-
     // askSettings.setTitle(
     //   `Do you want to run this poll on intervals ? If \`\`yes\`\`, then please enter the hour of the day you would want the reactor to be else enter \`\`no\`\``
     // );
@@ -235,7 +231,7 @@ exports.run = async (client, message, args) => {
       .setImage(foundDoc.pollImage);
     let i = 0;
     let optionString = ``;
-    let progressBarHere = foundDoc.anon ? `\n` : progressBar(0, 100, 10);
+    let progressBarHere = foundDoc.anon ? `` : progressBar(0, 100, 10);
     for (let field of foundDoc.optionsText) {
       optionString += `\n ${letters[i++]} **${
         field.text

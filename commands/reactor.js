@@ -200,7 +200,7 @@ exports.run = async (client, message, args) => {
       Supporter: "5",
     };
     messageEmbedObject.text =
-      "1️ - Everyone \n 2️ - New Heads - ``Crowd, prospect, fan`` \n 3️ - Heads - ``Enthusiast, challenger, regular`` \n 4 - Old Heads - ``active, pro, vet, titan, legend``";
+      "1️ - Everyone \n 2️ - New Heads - ``Crowd, prospect, fan`` \n 3️ - Heads - ``Enthusiast, challenger, regular`` \n 4 - Old Heads - ``active, pro, vet, titan, legend`` \n 5 - Supporter";
     messageEmbedObject.color = "#9400D3";
     messageEmbedObject.thumbnail =
       "https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png";
@@ -211,8 +211,26 @@ exports.run = async (client, message, args) => {
       collected,
       messageEmbedObject
     );
-    newReactor.pollRole = parseInt(pollRole);
-    prop.push(`\n - 📄 Poll Roles : ${newReactor.pollRole}`);
+    if (pollRole === "1") {
+      newReactor.pollRole = "oneRoleArray";
+      prop.push(`\n - 📄 Poll Roles : Everyone`);
+    } else if (pollRole === "2") {
+      newReactor.pollRole = "twoRoleArray";
+      prop.push(`\n - 📄 Poll Roles : New Heads`);
+    } else if (pollRole === "3") {
+      newReactor.pollRole = "threeRoleArray";
+      prop.push(`\n - 📄 Poll Roles : Heads`);
+    } else if (pollRole === "4") {
+      newReactor.pollRole = "fourRoleArray";
+      prop.push(`\n - 📄 Poll Roles : Old Heads`);
+    } else if (pollRole === "5") {
+      newReactor.pollRole = "fiveRoleArray";
+      prop.push(`\n - 📄 Poll Roles : Supporter`);
+    } else {
+      newReactor.pollRole = "oneRoleArray";
+      prop.push(`\n - 📄 Poll Roles : Everyone`);
+    }
+    newReactor.totalVotes = 0;
   }
 
   messageEmbedObject.topic = "Triggers";
@@ -228,9 +246,9 @@ exports.run = async (client, message, args) => {
     collected,
     messageEmbedObject
   );
-  prop.push(`\n - 📄 Stat point : ${triggerOneEmoji}`);
 
   if (triggerOneEmoji === `1`) {
+    prop.push(`\n - 📄 Stat point : yes`);
     messageEmbedObject.topic = "Trigger options";
     messageEmbedObject.text =
       "Please enter the number of reactions after which the stats are to be stored.";
@@ -675,21 +693,13 @@ exports.run = async (client, message, args) => {
       `Here are you AutoReact/Poll Details \n 
     \`\`ID: ${newReactor.id} \`\``
     )
-
-    .setDescription("Properties :")
     .setThumbnail(
       "https://cdn.discordapp.com/attachments/728671530459856896/728686591526174760/rocket.png"
     )
-    .addFields(
-      {
-        name: "Channel Name : ",
-        value: `${newReactor.channel}`,
-      },
-      {
-        name: "Properties ",
-        value: prop,
-      }
-    );
+    .addFields({
+      name: "Properties ",
+      value: prop,
+    });
 
   console.log(newReactor);
   await newReactor.save();

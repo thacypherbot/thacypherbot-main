@@ -726,201 +726,6 @@ client.on("message", async (message) => {
     await message.channel.send(processEmbedEdit);
   }
 
-  const checkChannel = message.channel.id;
-  const foundChannel = await Autor.find();
-  let finalEmojiNumberArry = [];
-  for (let item of foundChannel) {
-    if (item.channel === `<#${checkChannel}>`) {
-      for (let emote of item.emojis) {
-        await message.react(emote);
-      }
-
-      const botEmbed = new Discord.MessageEmbed().setTitle("Status");
-
-      botEmbed.addField(
-        `Counting`,
-        `Please react to the above message to express your views!`
-      );
-      botEmbed.setColor(`#E0FFFF`);
-      botEmbed.setThumbnail(
-        `https://media.discordapp.net/attachments/730528908398690315/730598198762012743/calculator.png`
-      );
-
-      const filter = (reaction, user) => {
-        return true;
-      };
-      let emojiArray = [];
-      for (var i = 0; i < item.emojis.length; i++) {
-        emojiArray.push(0);
-      }
-      let statsReactions = 0;
-      let timeToEnd = item.endReactionTime;
-      const collector = message.createReactionCollector(filter, {
-        time: timeToEnd,
-      });
-      collector.on("collect", async (reaction, user) => {
-        if (reactedArray.includes(user.tag)) return;
-        collectedEmojis++;
-        const userReactions = message.reactions.cache.filter((reaction) =>
-          reaction.users.cache.has(user.id)
-        );
-
-        if (item.role) {
-        }
-        if (item.statsReactionNumber) {
-          statsReactions++;
-        }
-
-        item.emojis.forEach((eachEmoji, i) => {
-          if (eachEmoji === reaction.emoji.name) {
-            emojiArray[i]++;
-          }
-        });
-        if (statsReactions === item.statsReactionNumber) {
-          let statsReactionsArray = [];
-          const statsEmbed = new Discord.MessageEmbed().setTitle(
-            "Stats Report"
-          );
-          item.emojis.forEach((eachEmoji, i) => {
-            statsReactionsArray.push(
-              `\n \n ***${eachEmoji} - \`\`${emojiArray[i]}\`\`***`
-            );
-          });
-          var ref =
-            "http://discordapp.com/channels/" +
-            message.guild.id +
-            "/" +
-            message.channel.id +
-            "/" +
-            message.id;
-          statsEmbed.addField(
-            `Stats resport - Triggered at ${item.statsReactionNumber} Reactions`,
-            ` ${statsReactionsArray} \n \n ***👨‍🦱 Message author*** - \`\`${message.author.tag}\`\` \n \n \`\`Original message\`\` ${ref}`
-          );
-          statsEmbed.setColor(`#9400D3`);
-          statsEmbed.setThumbnail(
-            `https://cdn.discordapp.com/attachments/728671530459856896/729851605104590878/chart.png`
-          );
-          client.channels.fetch("726742368841105438").then((channel) => {
-            channel.send(statsEmbed);
-          });
-        }
-        let ref1 =
-          "http://discordapp.com/channels/" +
-          message.guild.id +
-          "/" +
-          message.channel.id +
-          "/" +
-          message.id;
-        let statsReactionsArray1 = [];
-
-        if (collectedEmojis === item.notify) {
-          const dmStatsEmbed = new Discord.MessageEmbed().setTitle(
-            "Private Stats Report"
-          );
-
-          item.emojis.forEach((eachEmoji1, i) => {
-            statsReactionsArray1.push(
-              `\n \n ***${eachEmoji1} - \`\`${emojiArray[i]}\`\`***`
-            );
-          });
-
-          dmStatsEmbed.addField(
-            `Stats resport - Triggered at ${item.statsReactionNumber} Reactions`,
-            ` ${statsReactionsArray1} \n \n ***Message author*** - \`\`${message.author.tag}\`\` \n \n \`\`Original message\`\` ${ref1}`
-          );
-          dmStatsEmbed.setColor(`#9400D3`);
-          dmStatsEmbed.setThumbnail(
-            `https://cdn.discordapp.com/attachments/728671530459856896/729851605104590878/chart.png`
-          );
-
-          const theBoss = client.users.cache.find(
-            (user) => user.id === item.userid
-          );
-          theBoss.send(dmStatsEmbed);
-        }
-        if (reaction.emoji.name === item.endReactionEmoji) {
-          collector.stop("trigger");
-        }
-        item.emojis.forEach((eachEmoji1, i) => {
-          finalEmojiNumberArry.push(
-            `\n \n ***${eachEmoji1} - \`\`${emojiArray[i]}\`\`***`
-          );
-        });
-
-        reactedArray.push(user.tag);
-
-        if (collectedEmojis === item.endReactionNumber) {
-          collector.stop("reactions reached.");
-        }
-
-        console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
-      });
-      collector.on("end", async (collected) => {
-        const endEmbed = new Discord.MessageEmbed().setTitle("Status");
-        let link =
-          "http://discordapp.com/channels/" +
-          message.guild.id +
-          "/" +
-          message.channel.id +
-          "/" +
-          message.id;
-
-        endEmbed.setColor(`#32CD32`);
-        endEmbed.addField(
-          `📈 Results `,
-          `\n ${finalEmojiNumberArry} \n \n ***👨‍🦱 Message author*** - \`\`${message.author.tag}\`\` \n \n \`\`Original message\`\` - ${link} `
-        );
-        endEmbed.setThumbnail(
-          `https://media.discordapp.net/attachments/730528908398690315/730598493441491005/result.png`
-        );
-        botmsg.edit(endEmbed);
-        console.log(`Collected ${collected.size} items`);
-
-        const confirmationEmbed = new Discord.MessageEmbed()
-          .setColor("#E0FFFF")
-          .setTitle("Auto Reactor Initiated")
-
-          .setDescription("Properties :")
-          .setThumbnail(
-            "https://cdn.discordapp.com/attachments/728671530459856896/728686591526174760/rocket.png"
-          )
-          .addFields(
-            {
-              name: "Channel Name : ",
-              value: `${selectedChannel}`,
-            },
-            {
-              name: "Properties ",
-              value: prop,
-            },
-            {
-              name: `Results`,
-              value: `${finalEmojiNumberArry}`,
-            },
-            {
-              name: `Message author`,
-              value: `${message.author.tag}`,
-            },
-            {
-              name: `Original message`,
-              value: `${link}`,
-            }
-          );
-        const reactLog = await new logs();
-        reactLog.channel = item.channel;
-        reactLog.prop = prop;
-        reactLog.results = finalEmojiNumberArry;
-        reactLog.author = message.author.tag;
-        reactLog.msglink = link;
-        reactLog.save();
-        client.channels.fetch("730608533112094781").then((channel) => {
-          channel.send(confirmationEmbed);
-        });
-      });
-    }
-  }
-
   if (message.content.indexOf(prefix) !== 0) return;
 
   const command = args.shift().toLowerCase();
@@ -945,6 +750,49 @@ let statsEmbed;
 let statReactionData = [];
 let ref;
 let newPerson;
+let roleObject = {
+  oneRoleArray: ["@everyone"],
+  twoRoleArray: ["Crowd", "Prospect", "Fan"],
+  threeRoleArray: ["Enthusiast", "Challenge", "Regular"],
+  fourRoleArray: ["Active", "Pro", "Vet", "Titan", "Legend"],
+  fiveRoleArray: ["Supporter"],
+};
+let guildMember;
+let roleName;
+let fetchedGuild;
+let votesToAdd = async (user) => {
+  fetchedGuild = await client.guilds.fetch("723940968843444264");
+  guildMember = await fetchedGuild.members.fetch(user);
+  roleName = guildMember.roles.highest.name;
+
+  if (roleObject.oneRoleArray.includes(roleName)) {
+    return 1;
+  } else if (roleObject.twoRoleArray.includes(roleName)) {
+    return 2;
+  } else if (roleObject.threeRoleArray.includes(roleName)) {
+    return 3;
+  } else if (roleObject.fourRoleArray.includes(roleName)) {
+    return 4;
+  } else if (roleObject.fiveRoleArray.includes(roleName)) {
+    return 5;
+  } else {
+    return 1;
+  }
+};
+let checkAccess = async (user, theReactor) => {
+  if (theReactor.pollRole === "oneRoleArray") {
+    return true;
+  }
+  fetchedGuild = await client.guilds.fetch("723940968843444264");
+  guildMember = await fetchedGuild.members.fetch(user);
+  roleName = guildMember.roles.highest.name;
+  console.log(theReactor.pollRole, `poll role.`);
+  if (roleObject[theReactor.pollRole].includes(roleName)) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 client.on("messageReactionAdd", async (reaction, user) => {
   foundReactor = await Autor.find();
@@ -952,11 +800,11 @@ client.on("messageReactionAdd", async (reaction, user) => {
   if (reaction.message.partial) await reaction.message.fetch();
   if (reaction.partial) await reaction.fetch();
   if (user.bot) return;
+
   for (theReactor of foundReactor) {
     if (!theReactor.isRunning) continue;
     if (!theReactor.isPoll) {
       if (reaction.message.channel.id === theReactor.reactorSettings.channel) {
-        console.log(`OIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII`);
         selectedProfile = await ReactorProfile.findOne({
           messageid: reaction.message.id,
         }).catch((err) => {
@@ -977,8 +825,8 @@ client.on("messageReactionAdd", async (reaction, user) => {
         );
         console.log(personEmojiData, `person emoji data`);
         if (foundEmojiData) {
-          foundEmojiData.count += 1;
-          personEmojiData.count += 1;
+          foundEmojiData.count += await votesToAdd(user);
+          personEmojiData.count += await votesToAdd(user);
         }
         console.log(newPerson, `new person`);
         for (let dataItem of selectedProfile.emojiData) {
@@ -1002,6 +850,13 @@ client.on("messageReactionAdd", async (reaction, user) => {
       .catch((err) => {
         console.log(err);
       });
+    if (!(await checkAccess(user, theReactor))) {
+      user.send(`🔒 You don't have access to vote on this poll.`);
+      return fetchedMessage.reactions.cache
+        .find((r) => r.emoji.name === reaction.emoji.name)
+        .users.remove(user.id);
+    }
+
     if (autoReactorTotalCount === theReactor.statsReactionNumber) {
       console.log(`triggered`);
       statReactionData = [];
@@ -1057,7 +912,8 @@ client.on("messageReactionAdd", async (reaction, user) => {
           foundRemovedElement.voterNames = foundRemovedElement.voterNames.filter(
             (item) => item !== foundUser.username
           );
-          foundRemovedElement.votes -= 1;
+          foundRemovedElement.votes -= await votesToAdd(user);
+          theReactor.totalVotes -= 1;
           theReactor.grandTotal = theReactor.grandTotal.filter(
             (item) => item !== user.id
           );
@@ -1112,7 +968,8 @@ client.on("messageReactionAdd", async (reaction, user) => {
             .find((item) => item.id === user.id)
             .send(`\`\`You can only vote once on that option !\`\``);
         }
-        foundElementVotes.votes += 1;
+        foundElementVotes.votes += await votesToAdd(user);
+        theReactor.totalVotes += 1;
         // }
 
         foundElementVotes.voterid.push(user.id);
@@ -1155,9 +1012,38 @@ client.on("messageReactionAdd", async (reaction, user) => {
           }** \n ${editedProgressBar}`;
         }
         embedObject.setDescription(
-          optionString + `\n 📩 Total Votes : ${totalVotes()}`
+          optionString + `\n 📩 Total Votes : ${theReactor.totalVotes}`
         );
         fetchedMessage.edit(embedObject);
+
+        if (theReactor.grandTotal.length === theReactor.statsReactionNumber) {
+          statReactionData = [];
+          for (data of theReactor.optionsText) {
+            statReactionData.push(`
+            \n \`\`Emoji\`\` : ${data.emoji} \n \`\`Votes\`\` : ${data.votes} \n \`\`Voter Names\`\` : ${data.voterNames} \n \`\`Percent\`\` : ${data.percent} \n ----
+            `);
+            statsEmbed = new Discord.MessageEmbed().setTitle("Stats Report");
+          }
+          ref =
+            "http://discordapp.com/channels/" +
+            `723940968843444264` +
+            "/" +
+            theReactor.reactorSettings.channel +
+            "/" +
+            fetchedMessage.id;
+          statReactionData.push(`\n [click here to view the message](${ref})`);
+          statsEmbed.addField(
+            `Reactor id: \`\`${theReactor.id}\`\` \n Stats resport - Triggered at ${theReactor.statsReactionNumber} Reactions`,
+            ` \n ${statReactionData}`
+          );
+          statsEmbed.setColor(`#9400D3`);
+          statsEmbed.setThumbnail(
+            `https://cdn.discordapp.com/attachments/728671530459856896/729851605104590878/chart.png`
+          );
+          client.channels.fetch("730608533112094781").then((channel) => {
+            channel.send(statsEmbed);
+          });
+        }
       }
       console.log(`hello man total votes`);
       console.log(autoReactorTotalCount, theReactor.statsReactionNumber);
@@ -1177,6 +1063,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
   if (reaction.partial) await reaction.fetch();
   if (user.bot) return;
   for (theReactor of foundReactor) {
+    if (!theReactor.isRunning) continue;
     if (!theReactor.isPoll) {
       if (reaction.message.channel.id === theReactor.reactorSettings.channel) {
         selectedProfile = await ReactorProfile.findOne({
@@ -1189,7 +1076,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
           (item) => item.emojiName === reaction.emoji.name
         );
         if (foundEmojiData) {
-          foundEmojiData.count -= 1;
+          foundEmojiData.count -= await votesToAdd(user);
         }
 
         selectedProfile.markModified(`emojiData`);
@@ -1223,10 +1110,10 @@ client.on("messageReactionRemove", async (reaction, user) => {
       // ) {
       //   foundElementVotes.weights -= 2;
       // } else {
-      foundElementVotes.votes -= 1;
+      foundElementVotes.votes -= await votesToAdd(user);
+      theReactor.totalVotes -= 1;
       // }sole.log(foundElementVotes.voterid, `voter id here !`);
       foundElementVotes.voterid.forEach((value, index) => {
-        you;
         foundUser = client.users.cache.find((user) => user.id === value);
         foundElementVotes.voterNames = foundElementVotes.voterNames.filter(
           (name) => name !== foundUser.username
@@ -1284,7 +1171,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
           )}`;
         }
         embedObject.setDescription(
-          optionString + `\n 📩 Total Votes : ${totalVotes()}`
+          optionString + `\n 📩 Total Votes : ${theReactor.totalVotes}`
         );
         fetchedMessage.edit(embedObject);
       }

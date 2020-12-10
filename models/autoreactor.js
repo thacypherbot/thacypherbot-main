@@ -24,7 +24,8 @@ const autoSchema = mongoose.Schema({
   isRunning: Boolean,
   anon: Boolean,
   hasEnded: Boolean,
-  pollRole: Number,
+  pollRole: String,
+  totalVotes: Number,
 });
 
 module.exports = mongoose.model("Autor", autoSchema);

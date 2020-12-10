@@ -186,7 +186,7 @@ exports.run = async (client, message, args) => {
       // `📌 \`\`pollTopic\`\` - ${doc.pollTopic} \n♑ \`\`pollColor\`\` - ${doc.pollColor} \n🖼 \`\`pollImage\`\` - ${doc.pollimage} \n🤡 \`\`emojis\`\` - ${doc.emojis} \n \`\`statsReactionNumber\`\` - ${doc.statsReactionNumber}  \n🧭 \`\`endReactionEmoji\`\` - ${doc.endReactionEmoji} \n🗳️ \`\`endReactionNumber\`\`  - ${doc.endReactionNumber}  \n⏳ \`\`endReactionTime\`\` - ${doc.endReactionTime} \n👨‍👦 \`\`role\`\` - ${doc.role} \n📩 \`\`notify\`\` - ${doc.notify} \n🧷 \`\`pin\`\` - ${doc.pin} \n🔁 \`\`rep\`\` - ${doc.rep} \n🎚️ \`\`repNum\`\` - ${doc.repNum}`
     );
     paginationEmbed(title, description, reactorsArray, message);
-    const userInputEmbed = new Discord.MessageEmbed().setTitle(
+    const userInputEmbed = new Discord.MessageEmbed().setDescription(
       `Reply with that property name you would like to change. You have 20 seconds`
     );
     const msgFilter = (m) => m.author.id === message.author.id;
@@ -214,7 +214,9 @@ exports.run = async (client, message, args) => {
 
     if (doc[userInputMessage] || doc.optionsText) {
       if (userInputMessage.includes(`option`)) {
-        let optionNumber = parseInt(userInputMessage);
+        let optionNumber = parseInt(
+          userInputMessage.slice(6, userInputMessage.length)
+        );
         messageEmbedObject.topic = "Poll";
         messageEmbedObject.text = `Please enter option ${optionNumber}`;
         let returnedText = await createAndWait(
@@ -223,7 +225,8 @@ exports.run = async (client, message, args) => {
           collected,
           messageEmbedObject
         );
-        doc.optionsText[theNumber - 1].text = returnedText;
+        doc.optionsText[optionNumber - 1].text = returnedText;
+        doc.markModified("optionsText");
       }
 
       if (userInputMessage === "pollTopic") {
@@ -285,6 +288,8 @@ exports.run = async (client, message, args) => {
           collected,
           messageEmbedObject
         );
+        doc.statsReactionNumber = statsReactionNumber;
+        console.log(statsReactionNumber, `here it isd`);
       }
       if (userInputMessage === "endReactionEmoji") {
         messageEmbedObject.topic = "Trigger options";
@@ -369,7 +374,10 @@ exports.run = async (client, message, args) => {
 
       doc
         .save()
-        .then(() => message.channel.send(`\`\`Value saved\`\``))
+        .then((saved) => {
+          message.channel.send(`\`\`Value saved\`\``);
+          console.log(saved);
+        })
         .catch((err) => console.log(err));
     } else {
       message.channel.send(`You cannot edit that value.`);

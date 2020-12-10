@@ -1,7 +1,11 @@
-const Discord = require('discord.js');
-const hasRole = (message) => {
-    const checkRole = (message.member.roles.cache.find(role => role.name === 'Admins')) ? true : false
-    return checkRole
-}
+const Discord = require("discord.js");
+const hasRole = (message, roleString) => {
+  const checkRole = message.member.roles.cache.find(
+    (role) => role.name === roleString
+  )
+    ? true
+    : false;
+  return checkRole;
+};
 
-module.exports = hasRole
+module.exports = hasRole;
