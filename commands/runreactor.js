@@ -188,15 +188,24 @@ exports.run = async (client, message, args) => {
       "No saved reactors found. Please create a reactor using ``$reactor``"
     );
   });
-  // if (
-  //   allReactors.some(
-  //     reactorSettings.channel === collected.first().mentions.channels.first()
-  //   )
-  // ) {
-  //   return message.channel.send(
-  //     `You already have a reactor set for that channel. Please try again and choose a different channel.`
-  //   );
-  // }
+  let i = 0;
+  const checkDups = allReactors.some((item) => {
+    console.log(item, i++);
+    if (item.reactorSettings) {
+      console.log(
+        item.reactorSettings.channel,
+        collected.first().mentions.channels.first().id
+      );
+      item.reactorSettings.channel ===
+        collected.first().mentions.channels.first().id;
+    }
+  });
+  console.log(checkDups, `check dups`);
+  if (checkDups) {
+    return message.channel.send(
+      `You already have a reactor set for that channel. Please try again and choose a different channel.`
+    );
+  }
   reactorSettings.channel = collected.first().mentions.channels.first();
   let confirmationEmbed = new Discord.MessageEmbed();
   confirmationEmbed.setColor(`#BFFF00`);

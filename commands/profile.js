@@ -27,10 +27,7 @@ exports.run = async (client, message, args) => {
   profileEmbed.setTitle(`ThaCypher Reactor Profile`);
   profileEmbed.setDescription(`${usertag}'s profile`);
   profileEmbed.addField(`Emojis :`, emojiDataString);
-  profileEmbed.addField(
-    `Gems`,
-    "💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎"
-  );
+  profileEmbed.addField(`Gems`, theProfile.gems);
   profileEmbed.setThumbnail(profile);
 
   message.channel.send(profileEmbed);
