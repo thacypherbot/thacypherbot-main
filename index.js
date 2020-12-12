@@ -193,6 +193,8 @@ client.on("message", async (message) => {
       }
       selectedProfile.userid = message.author.id;
       selectedProfile.messageid = message.id;
+      selectedProfile.stillRunning = true;
+      selectedProfile.totalVotes = 0;
       for (emojiToBeReacted of theReactor.emojis) {
         message.react(emojiToBeReacted);
         if (
@@ -737,19 +739,9 @@ client.on("message", async (message) => {
   cmd.run(client, message, args);
 });
 
-let foundElementVotes;
-let totalVotes;
-let numberOfVotes = 0;
-let hasUserVoted;
-let fetchedChannel;
-let fetchedMessage;
-let foundUser;
 let autoReactorTotalCount = 0;
 let userConfirmationEmbed = new Discord.MessageEmbed();
-let statsEmbed;
-let statReactionData = [];
-let ref;
-let newPerson;
+
 let roleObject = {
   oneRoleArray: ["@everyone"],
   twoRoleArray: ["Crowd", "Prospect", "Fan"],
@@ -760,6 +752,7 @@ let roleObject = {
 let guildMember;
 let roleName;
 let fetchedGuild;
+
 let votesToAdd = async (user) => {
   fetchedGuild = await client.guilds.fetch("723940968843444264");
   guildMember = await fetchedGuild.members.fetch(user);
@@ -794,7 +787,50 @@ let checkAccess = async (user, theReactor) => {
   }
 };
 
+const autoReactorEndLog = (mainString, cypherStarsString) => {
+  statReactionData = [];
+  for (let data of selectedProfile.emojiData) {
+    statReactionData.push(
+      `\n \`\`Emoji\`\` : ${data.emojiName} \n \`\`Votes\`\` : ${data.count} \n`
+    );
+  }
+  statReactionData.push(cypherStarsString);
+  statsEmbed = new Discord.MessageEmbed().setTitle("Stats Report");
+  ref =
+    "http://discordapp.com/channels/" +
+    `723940968843444264` +
+    "/" +
+    theReactor.reactorSettings.channel +
+    "/" +
+    selectedProfile.id;
+  statReactionData.push(`\n [click here to view the message](${ref})`);
+  mainString += statReactionData;
+  statsEmbed.addField(`Report : `, mainString);
+  // string example :  `Reactor id: \`\`${theReactor.id}\`\` \n Stats resport - Triggered at ${theReactor.statsReactionNumber} Reactions`,
+  // ` \n ${statReactionData}`;
+  statsEmbed.setColor(`#9400D3`);
+  statsEmbed.setThumbnail(
+    `https://cdn.discordapp.com/attachments/728671530459856896/729851605104590878/chart.png`
+  );
+  client.channels.fetch("730608533112094781").then((channel) => {
+    return channel.send(statsEmbed);
+  });
+};
 client.on("messageReactionAdd", async (reaction, user) => {
+  let foundElementVotes;
+  let totalVotes;
+  let numberOfVotes = 0;
+  let hasUserVoted;
+  let fetchedChannel;
+  let fetchedMessage;
+  let foundUser;
+  let statsEmbed;
+  let statReactionData = [];
+  let ref;
+  let newPerson;
+  let mainString = "";
+  let cypherStarsString = "";
+  let totalGems = "";
   foundReactor = await Autor.find();
   console.log(`captured`);
   if (reaction.message.partial) await reaction.message.fetch();
@@ -804,12 +840,15 @@ client.on("messageReactionAdd", async (reaction, user) => {
   for (theReactor of foundReactor) {
     if (!theReactor.isRunning) continue;
     if (!theReactor.isPoll) {
+      console.log("fetchedMessage");
       if (reaction.message.channel.id === theReactor.reactorSettings.channel) {
         selectedProfile = await ReactorProfile.findOne({
           messageid: reaction.message.id,
         }).catch((err) => {
           console.log(err);
         });
+        if (!selectedProfile.stillRunning) return;
+
         newPerson = await PersonalProfile.findOne({
           userid: reaction.message.author.id,
         }).catch((err) => {
@@ -827,6 +866,10 @@ client.on("messageReactionAdd", async (reaction, user) => {
         if (foundEmojiData) {
           foundEmojiData.count += await votesToAdd(user);
           personEmojiData.count += await votesToAdd(user);
+          selectedProfile.totalVotes += 1;
+          // 1 gem = 5 count
+          newPerson.gems = "💎".repeat(Math.floor(personEmojiData.count / 5));
+          totalGems = "💎".repeat(Math.floor(foundEmojiData.count / 5));
         }
         console.log(newPerson, `new person`);
         for (let dataItem of selectedProfile.emojiData) {
@@ -837,7 +880,29 @@ client.on("messageReactionAdd", async (reaction, user) => {
         await newPerson.save().catch((err) => console.log(err));
         selectedProfile.markModified(`emojiData`);
         await selectedProfile.save().catch((err) => console.log(err));
+        if (selectedProfile.totalVotes === theReactor.statsReactionNumber) {
+          mainString = `Reactor id: \`\`${theReactor.id}\`\` \n Stats resport - Triggered at ${theReactor.statsReactionNumber} Reactions \n ${statReactionData} \n Gems : \n ${totalGems}`;
+          cypherStarsString = "";
+          autoReactorEndLog(mainString, cypherStarsString);
+        }
+        if (
+          theReactor.endReactionEmoji === reaction.emoji.name ||
+          theReactor.endReactionNumber === selectedProfile.totalVotes
+        ) {
+          console.log("triggered.");
+          let dueToString = `reaction of ${theReactor.endReactionEmoji}`;
+          if (theReactor.endReactionNumber === selectedProfile.totalVotes) {
+            dueToString = `reaching the set threshold of ${theReactor.endReactionNumber} emojis.`;
+          }
+          mainString = `Reactor id: \`\`${theReactor.id}\`\` \n Stats resport - Triggered due to ${dueToString} \n \n \`\`Gems\`\` : ${totalGems} \n`;
+          cypherStarsString = "";
+          autoReactorEndLog(mainString, cypherStarsString);
+          selectedProfile.stillRunning = false;
+          await selectedProfile.save();
+          return;
+        }
       }
+      continue;
     }
     fetchedChannel = await client.channels
       .fetch(theReactor.reactorSettings.channel)
@@ -857,36 +922,6 @@ client.on("messageReactionAdd", async (reaction, user) => {
         .users.remove(user.id);
     }
 
-    if (autoReactorTotalCount === theReactor.statsReactionNumber) {
-      console.log(`triggered`);
-      statReactionData = [];
-      for (let data of selectedProfile.emojiData) {
-        statReactionData.push(
-          `\n \`\`Emoji\`\` : ${data.emojiName} \n \`\`Votes\`\` : ${data.count} \n`
-        );
-      }
-      statReactionData.push(` \`\`Cypher Stars\`\` : 🌟 🌟 `);
-      statsEmbed = new Discord.MessageEmbed().setTitle("Stats Report");
-      ref =
-        "http://discordapp.com/channels/" +
-        `723940968843444264` +
-        "/" +
-        theReactor.reactorSettings.channel +
-        "/" +
-        selectedProfile.id;
-      statReactionData.push(`\n [click here to view the message](${ref})`);
-      statsEmbed.addField(
-        `Reactor id: \`\`${theReactor.id}\`\` \n Stats resport - Triggered at ${theReactor.statsReactionNumber} Reactions`,
-        ` \n ${statReactionData}`
-      );
-      statsEmbed.setColor(`#9400D3`);
-      statsEmbed.setThumbnail(
-        `https://cdn.discordapp.com/attachments/728671530459856896/729851605104590878/chart.png`
-      );
-      client.channels.fetch("730608533112094781").then((channel) => {
-        channel.send(statsEmbed);
-      });
-    }
     if (reaction.message.id === theReactor.reactorSettings.messageId) {
       console.log("we got the reaction");
 
@@ -1067,22 +1102,34 @@ client.on("messageReactionRemove", async (reaction, user) => {
     if (!theReactor.isPoll) {
       if (reaction.message.channel.id === theReactor.reactorSettings.channel) {
         selectedProfile = await ReactorProfile.findOne({
+          messageid: reaction.message.id,
+        }).catch((err) => {
+          console.log(err);
+        });
+        newPerson = await PersonalProfile.findOne({
           userid: reaction.message.author.id,
         }).catch((err) => {
           console.log(err);
         });
+
+        if (!selectedProfile.stillRunning) return;
         console.log(selectedProfile, `selectedprofile here`);
         foundEmojiData = selectedProfile.emojiData.find(
           (item) => item.emojiName === reaction.emoji.name
         );
+        personEmojiData = newPerson.emojiData.find(
+          (item) => item.emojiName === reaction.emoji.name
+        );
         if (foundEmojiData) {
           foundEmojiData.count -= await votesToAdd(user);
+          personEmojiData.count -= await votesToAdd(user);
+          selectedProfile.totalVotes -= 1;
         }
 
         selectedProfile.markModified(`emojiData`);
         selectedProfile
           .save()
-          .then(() => console.log(`saved`))
+          .then((doc) => console.log(`saved`, doc))
           .catch((err) => console.log(err));
       }
     }
@@ -1208,19 +1255,15 @@ async function main() {
     runProd = !runProd;
   }
   if (runProd) {
-    client
-      .login(`NzQ5MjUwODgyODMwNTk4MjM1.X0pQQg.oaZf_cFlXBn0KgA0PjedbT3HrJQ`)
-      .catch((e) => {
-        console.log("ERROR");
-        console.log(e);
-      });
+    client.login(process.env.PROD).catch((e) => {
+      console.log("ERROR");
+      console.log(e);
+    });
   } else {
-    client
-      .login(`NzQ5MjUwODgyODMwNTk4MjM1.X0pQQg.oaZf_cFlXBn0KgA0PjedbT3HrJQ`)
-      .catch((e) => {
-        console.log("ERROR");
-        console.log(e);
-      });
+    client.login(process.env.TEST).catch((e) => {
+      console.log("ERROR");
+      console.log(e);
+    });
   }
 }
 main();

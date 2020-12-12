@@ -247,7 +247,7 @@ exports.run = async (client, message, args) => {
     messageEmbedObject
   );
 
-  if (triggerOneEmoji === `1`) {
+  if (triggerOneEmoji === "1") {
     prop.push(`\n - 📄 Stat point : yes`);
     messageEmbedObject.topic = "Trigger options";
     messageEmbedObject.text =
@@ -285,7 +285,7 @@ exports.run = async (client, message, args) => {
     console.log(triggerTwoEmoji);
     prop.push(`\n - 📊 End reaction with Emoji : ${triggerTwoEmoji}`);
 
-    if (triggerTwoEmoji === `1`) {
+    if (triggerTwoEmoji === "1") {
       messageEmbedObject.topic = "Trigger options";
       messageEmbedObject.text =
         "Please react this message with the reaction you would want to trigger this action";
@@ -320,7 +320,7 @@ exports.run = async (client, message, args) => {
     );
     console.log(triggerThreeEmoji);
     prop.push(`\n - 🎬 End reaction after some cap : ${triggerThreeEmoji}`);
-    if (triggerThreeEmoji === `1`) {
+    if (triggerThreeEmoji === "1") {
       messageEmbedObject.topic = "Trigger options";
       messageEmbedObject.text =
         "Please enter the number of reactions to trigger this action";
@@ -361,7 +361,7 @@ exports.run = async (client, message, args) => {
     );
     prop.push(`\n - 📄 Reaction options : ${reactCusOrPreMsgEmoji}`);
 
-    if (reactCusOrPreMsgEmoji === `2`) {
+    if (reactCusOrPreMsgEmoji === "2") {
       messageEmbedObject.topic = "Please choose one of the preset options";
       messageEmbedObject.text =
         "1 - ``✅`` - ``❎`` \n 2 - ``👍`` - ``🤐`` - `` 👎 `` \n 3 - ``😍`` - ``👍`` - ``🤐`` - `` 👎 `` - ``🤢``";
@@ -375,21 +375,26 @@ exports.run = async (client, message, args) => {
         collected,
         messageEmbedObject
       );
-      console.log(finalPreset);
-      if (finalPreset === `1️`) {
+      console.log(
+        typeof finalPreset,
+        finalPreset,
+        "is finalPreset === to 1 ? :",
+        finalPreset === "3"
+      );
+      if (finalPreset === "1") {
+        console.log(`WE ENTERED!`);
         const presetEmojis1 = `✅ - ❎`;
         prop.push(`\n - 📄 Preset emojis : ${presetEmojis1}`);
         newReactor.emojis.push(`✅`);
         newReactor.emojis.push(`❎`);
-      }
-      if (finalPreset === `2️`) {
+      } else if (finalPreset === "2") {
         const presetEmojis2 = `👍 - 🤐 - 👎`;
         prop.push(`\n - 📄 Preset emojis : ${presetEmojis2}`);
         newReactor.emojis.push(`👍`);
         newReactor.emojis.push(`🤐`);
         newReactor.emojis.push(`👎`);
-      }
-      if (finalPreset === `3️`) {
+      } else if (finalPreset === "3") {
+        console.log(`third one`);
         const presetEmojis3 = `😍 - 👍 - 👎 - 🤐 - 🤢`;
         prop.push(`\n - 📄 Preset emojis : ${presetEmojis3}`);
 
@@ -399,11 +404,12 @@ exports.run = async (client, message, args) => {
         newReactor.emojis.push(`🤐`);
         newReactor.emojis.push(`🤢`);
       }
+      newReactor.markModified("emojis");
     }
 
     console.log(newReactor.emojis);
 
-    if (reactCusOrPreMsgEmoji === `1`) {
+    if (reactCusOrPreMsgEmoji === "1") {
       messageEmbedObject.topic = "Reactions to be done";
       messageEmbedObject.text =
         "Please select the number of reactions you want to be reacted on the messages. \n ``MINIMUM : 2``";

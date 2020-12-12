@@ -18,6 +18,7 @@ exports.run = async (client, message, args) => {
     }
   );
   let emojiDataString = "";
+  console.log(theProfile);
   for (let item of theProfile.emojiData) {
     emojiDataString += `${item.emojiName} : ${item.count} \n`;
   }
@@ -26,7 +27,10 @@ exports.run = async (client, message, args) => {
   profileEmbed.setTitle(`ThaCypher Reactor Profile`);
   profileEmbed.setDescription(`${usertag}'s profile`);
   profileEmbed.addField(`Emojis :`, emojiDataString);
-  profileEmbed.addField(`ThaCypher Stars:`, `⭐ ⭐ ⭐`);
+  profileEmbed.addField(
+    `Gems`,
+    "💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎 💎"
+  );
   profileEmbed.setThumbnail(profile);
 
   message.channel.send(profileEmbed);
