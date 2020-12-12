@@ -192,10 +192,6 @@ exports.run = async (client, message, args) => {
   const checkDups = allReactors.some((item) => {
     console.log(item, i++);
     if (item.reactorSettings) {
-      console.log(
-        item.reactorSettings.channel,
-        collected.first().mentions.channels.first().id
-      );
       item.reactorSettings.channel ===
         collected.first().mentions.channels.first().id;
     }
