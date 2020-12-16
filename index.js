@@ -1255,19 +1255,15 @@ async function main() {
     runProd = !runProd;
   }
   if (runProd) {
-    client
-      .login(`NzQ5MjUwODgyODMwNTk4MjM1.X0pQQg.oaZf_cFlXBn0KgA0PjedbT3HrJQ`)
-      .catch((e) => {
-        console.log("ERROR");
-        console.log(e);
-      });
+    client.login(process.env.PROD).catch((e) => {
+      console.log("ERROR");
+      console.log(e);
+    });
   } else {
-    client
-      .login(`NzQ5MjUwODgyODMwNTk4MjM1.X0pQQg.oaZf_cFlXBn0KgA0PjedbT3HrJQ`)
-      .catch((e) => {
-        console.log("ERROR");
-        console.log(e);
-      });
+    client.login(process.env.TEST).catch((e) => {
+      console.log("ERROR");
+      console.log(e);
+    });
   }
 }
 main();

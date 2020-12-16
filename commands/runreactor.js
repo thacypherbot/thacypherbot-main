@@ -188,19 +188,21 @@ exports.run = async (client, message, args) => {
       "No saved reactors found. Please create a reactor using ``$reactor``"
     );
   });
-  let i = 0;
-  const checkDups = allReactors.some((item) => {
-    console.log(item, i++);
-    if (item.reactorSettings) {
+  for (let item of allReactors) {
+    console.log(
       item.reactorSettings.channel ===
-        collected.first().mentions.channels.first().id;
-    }
-  });
-  console.log(checkDups, `check dups`);
-  if (checkDups) {
-    return message.channel.send(
-      `You already have a reactor set for that channel. Please try again and choose a different channel.`
+        collected.first().mentions.channels.first().id,
+      item.reactorSettings.channel,
+      collected.first().mentions.channels.first().id
     );
+    if (
+      item.reactorSettings.channel ===
+      collected.first().mentions.channels.first().id
+    ) {
+      return message.channel.send(
+        `You already have a reactor set for that channel. Please try again and choose a different channel.`
+      );
+    }
   }
   reactorSettings.channel = collected.first().mentions.channels.first();
   let confirmationEmbed = new Discord.MessageEmbed();
