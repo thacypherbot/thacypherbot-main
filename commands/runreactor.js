@@ -189,12 +189,7 @@ exports.run = async (client, message, args) => {
     );
   });
   for (let item of allReactors) {
-    console.log(
-      item.reactorSettings.channel ===
-        collected.first().mentions.channels.first().id,
-      item.reactorSettings.channel,
-      collected.first().mentions.channels.first().id
-    );
+    if (!item.reactorSettings) continue;
     if (
       item.reactorSettings.channel ===
       collected.first().mentions.channels.first().id
