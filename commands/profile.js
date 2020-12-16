@@ -1,7 +1,4 @@
 const Discord = require("discord.js");
-const { Canvas, resolveImage } = require("canvas-constructor");
-const schedule = require("node-schedule");
-const ReactorProfile = require("../models/reactorprofile.js");
 const PersonalProfile = require("../models/personalprofile.js");
 exports.run = async (client, message, args) => {
   let theid = message.author.id;
