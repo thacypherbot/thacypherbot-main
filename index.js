@@ -47,7 +47,7 @@ const mongoose = require("mongoose");
 const { time } = require("console");
 const { title } = require("process");
 mongoose.connect(
-  "mongodb+srv://admin:admin@cluster0.ntgpc.mongodb.net/AR?retryWrites=true&w=majority",
+  "mongodb+srv://admin:admin@cluster0.3iec5.gcp.mongodb.net/AR?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
   },
