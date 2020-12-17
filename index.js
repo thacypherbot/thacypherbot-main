@@ -176,11 +176,9 @@ client.on("message", async (message) => {
 
   foundReactor = await Autor.find();
   for (theReactor of foundReactor) {
-    if (!theReactor.isRunning) continue;
+    if (!theReactor.isRunning || theReactor.isPoll) continue;
     if (message.channel.id === theReactor.reactorSettings.channel) {
-      if (!theReactor.isRunning) continue;
-      console.log(`hello1`);
-      if (!theReactor.isPoll) selectedProfile = new ReactorProfile();
+      selectedProfile = new ReactorProfile();
       exists = await PersonalProfile.exists({ userid: message.author.id });
       console.log(exists);
       if (exists) {
