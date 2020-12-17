@@ -178,6 +178,7 @@ client.on("message", async (message) => {
   for (theReactor of foundReactor) {
     if (!theReactor.isRunning) continue;
     if (message.channel.id === theReactor.reactorSettings.channel) {
+      if (message.content.includes(prefix)) return;
       console.log(`hello1`);
       if (!theReactor.isPoll) selectedProfile = new ReactorProfile();
       exists = await PersonalProfile.exists({ userid: message.author.id });
