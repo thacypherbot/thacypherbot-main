@@ -1,0 +1,24 @@
+{
+	"name": "thacypherbot-main",
+	"version": "1.0.0",
+	"description": "A bot for Thiink.",
+	"main": "src/index.js",
+	"scripts": {
+		"start": "node . prod",
+		"test": "node . test"
+	},
+	"keywords": [],
+	"author": "ThaCypher",
+	"license": "MPL-2.0",
+	"dependencies": {
+		"discord-akairo": "^8.1.0",
+		"discord.js": "^12.5.1",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"mongoose": "^5.11.8"
+	},
+	"devDependencies": {
+		"eslint": "^7.15.0",
+		"eslint-config-tulip": "^2.0.0"
+	}
+}
