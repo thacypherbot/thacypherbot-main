@@ -14,6 +14,12 @@ class ThaCypherBot extends AkairoClient {
 		});
 
 		this.server = server;
+		this.isProcessing = false;
+		this.isRecording = false;
+		this.speaking = new Map();
+		this.lockTo = undefined;
+		this.recordings = [];
+		this.recordingFormat = {};
 
 		this.commandHandler = new CommandHandler(this, {
 			aliasReplacement: /-/g,
@@ -49,7 +55,8 @@ class ThaCypherBot extends AkairoClient {
 		mongoose.connect(
 			process.env.DB_URI,
 			{
-				useNewUrlParser: true
+				useNewUrlParser: true,
+				useUnifiedTopology: true
 			},
 			err => {
 				if (err) {
