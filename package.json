@@ -11,8 +11,10 @@
 	"author": "ThaCypher",
 	"license": "MPL-2.0",
 	"dependencies": {
+		"@2toad/profanity": "^1.2.0",
 		"@discordjs/opus": "^0.3.3",
 		"discord-akairo": "^8.1.0",
+		"discord-paginationembed": "^2.1.0",
 		"discord.js": "^12.5.1",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
