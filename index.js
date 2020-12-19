@@ -20,7 +20,7 @@ const ReactorProfile = require("./models/reactorprofile.js");
 const PersonalProfile = require("./models/personalprofile.js");
 const hasRole = require("./functions/hasRole.js");
 const textRecordMessageAfterConfirmation = require("./functions/textRecordMessageAfterConfirmation.js");
-let prefix = `$`;
+let prefix = `!`;
 class Readable extends require("stream").Readable {
   _read() {}
 }
@@ -284,8 +284,8 @@ client.on("message", async (message) => {
   console.log(message.content);
 
   if (message.content === `${prefix}record`) {
-    console.log(hasRole(message), `checking role`);
-    if (!hasRole(message)) return;
+    console.log(hasRole(message, "Admins"), `checking role`);
+    if (!hasRole(message, "Admins")) return;
     if (processing)
       return await message.channel.send(
         `You cannot start a new recording while there is one processing.`
@@ -445,7 +445,7 @@ client.on("message", async (message) => {
   }
 
   if (message.content === `${prefix}stop`) {
-    if (!hasRole(message)) return;
+    if (!hasRole(message, "Admins")) return;
 
     if (!locked)
       await message.member.voice.channel.overwritePermissions([
