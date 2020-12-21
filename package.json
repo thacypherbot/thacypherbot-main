@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@2toad/profanity": "^1.2.0",
     "@discordjs/opus": "^0.3.3",
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "canvas-constructor": "^4.1.0",

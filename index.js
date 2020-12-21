@@ -126,7 +126,7 @@ async function textRecordConfirmation(message, date) {
     `🎐 Lets give your masterpiece a title.`
   );
   textRecordTitle.setDescription(
-    `Please reply to this message with a title no more than 25 characters. You have 30 seconds.`
+    `Please reply to this message with a title no more than 25 characters. You have 5 minutes. \n If you don't wish to save this verse, reply with \`\`delete\`\``
   );
   textRecordTitle.setThumbnail(
     `https://media.discordapp.net/attachments/748005515992498297/756094502535692338/title.png?width=100&height=100`
@@ -143,7 +143,8 @@ async function textRecordConfirmation(message, date) {
       time: 30000,
     }
   );
-
+  if (textRecordTitleMessageCollector.first().content === "delete")
+    return false;
   return textRecordTitleMessageCollector.first()
     ? textRecordTitleMessageCollector.first().content
     : date;
@@ -244,7 +245,9 @@ client.on("message", async (message) => {
         link: messageUrl,
       };
       textRecordObject.title = await textRecordConfirmation(message, date);
-
+      if (!textRecordObject.title) {
+        return message.author.send(`\`\`The verse was deleted\`\``);
+      }
       existingTextRecord.content.push(textRecordObject);
       existingTextRecord
         .save()
@@ -266,6 +269,9 @@ client.on("message", async (message) => {
       };
       newTextRecord.userid = message.author.id;
       textRecordObject.title = await textRecordConfirmation(message, date);
+      if (!textRecordObject.title) {
+        return message.author.send(`\`\`The verse was deleted\`\``);
+      }
       newTextRecord.content.push(textRecordObject);
       newTextRecord
         .save()
