@@ -4,7 +4,7 @@
  */
 const Discord = require('discord.js');
 
-module.exports = async (message, textRecordObject) => {
+module.exports = async (message, textRecordObject, record) => {
 	const textRecordMessage = new Discord.MessageEmbed().setTitle('Here is your recorded text.');
 	console.log(textRecordObject);
 	const smallPart = textRecordObject.text.slice(0, 40);
@@ -27,8 +27,13 @@ module.exports = async (message, textRecordObject) => {
 	const reviewText = await message.author.send(textRecordMsgFunction(textRecordMessage, contentString));
 
 	await reviewText.react('🗒️');
-	const filter = reaction => ['🗒️'].includes(reaction.emoji.name);
-	const reviewReacts = await reviewText.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] });
+	await reviewText.react('🗑️');
+	const filter = reaction => ['🗒️', '🗑️'].includes(reaction.emoji.name);
+	const reviewReacts = await reviewText.awaitReactions(filter, {
+		max: 1,
+		time: 60000,
+		errors: ['time']
+	});
 
 	if (reviewReacts.first().emoji.name === '🗒️') {
 		const editedTextRecordMessage = new Discord.MessageEmbed().setTitle('Here is your recorded text.');
@@ -36,5 +41,17 @@ module.exports = async (message, textRecordObject) => {
 			`\`\`\`Channel\`\`\` : ${textRecordObject.channel} \n` +
 			`> \`\`\`Content\`\`\` : \n ${textRecordObject.text}`;
 		await reviewText.edit(textRecordMsgFunction(editedTextRecordMessage, contentString));
+	} else if (reviewReacts.first().emoji.name === '🗑️') {
+		record.content.splice(record.content.indexOf(textRecordObject), 1);
+		record.markModified('content');
+		await record
+			.save()
+			.then(doc => {
+				console.log(doc);
+				return message.author.send('`This verse was successfully deleted.`');
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
 };

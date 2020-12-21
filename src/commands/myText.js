@@ -23,6 +23,7 @@ class MyTextCommand extends Command {
 					match: 'rest'
 				}
 			],
+
 			category: 'general',
 			description: {
 				content: 'My Text Command',
@@ -78,8 +79,8 @@ class MyTextCommand extends Command {
 
 		FieldsEmbed.build();
 
-		const recMessage = new MessageEmbed().setTitle('   ');
-		recMessage.setDescription('Reply with the record number to view full verse.');
+		const recMessage = new MessageEmbed();
+		recMessage.setDescription('Reply with the record number to view full verse. Reply with `delete` ');
 		recMessage.setColor('#FF00AE');
 		const textRecordNumber = await message.author.send(recMessage);
 		const textRecordNumberCollector = await textRecordNumber.channel.awaitMessages(
@@ -90,7 +91,7 @@ class MyTextCommand extends Command {
 			}
 		);
 		const num = textRecordNumberCollector.first().content;
-		return recordMsgAfterConfirmation(message, records.content[num - 1]);
+		return recordMsgAfterConfirmation(message, records.content[num - 1], record);
 	}
 }
 
