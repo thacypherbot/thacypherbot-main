@@ -22,7 +22,12 @@ class MyTextCommand extends Command {
 					id: 'rest',
 					match: 'rest'
 				}
-			]
+			],
+			category: 'general',
+			description: {
+				content: 'My Text Command',
+				usage: 'Describe usage here...'
+			}
 		});
 	}
 

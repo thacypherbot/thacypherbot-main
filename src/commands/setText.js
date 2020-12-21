@@ -24,7 +24,8 @@ class SetTextCommand extends Command {
 			description: {
 				content: 'Set text something something.',
 				usage: '<method> <rest>'
-			}
+			},
+			category: 'general'
 		});
 	}
 
