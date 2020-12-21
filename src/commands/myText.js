@@ -23,6 +23,12 @@ class MyTextCommand extends Command {
           match: "rest",
         },
       ],
+
+      category: "general",
+      description: {
+        content: "My Text Command",
+        usage: "Describe usage here...",
+      },
     });
   }
 
@@ -85,7 +91,7 @@ class MyTextCommand extends Command {
 
     const recMessage = new MessageEmbed().setTitle("   ");
     recMessage.setDescription(
-      "Reply with the record number to view full verse."
+      "Reply with the record number to view full verse. Reply with ``delete`` "
     );
     recMessage.setColor("#FF00AE");
     const textRecordNumber = await message.author.send(recMessage);
@@ -97,7 +103,11 @@ class MyTextCommand extends Command {
       }
     );
     const num = textRecordNumberCollector.first().content;
-    return recordMsgAfterConfirmation(message, records.content[num - 1]);
+    return recordMsgAfterConfirmation(
+      message,
+      records.content[num - 1],
+      record
+    );
   }
 }
 
