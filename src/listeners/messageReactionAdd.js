@@ -167,10 +167,12 @@ class MessageReactionAddListener extends Listener {
 			fetchedChannel = await this.client.channels.fetch(theReactor.reactorSettings.channel).catch(err => {
 				console.log(err);
 			});
-
-			fetchedMessage = await fetchedChannel.messages.fetch(theReactor.reactorSettings.messageId).catch(err => {
-				console.log(err);
-			});
+			if (fetchedChannel) {
+				// eslint-disable-next-line max-len
+				fetchedMessage = await fetchedChannel.messages.fetch(theReactor.reactorSettings.messageId).catch(err => {
+					console.log(err);
+				});
+			}
 
 			// eslint-disable-next-line no-extra-parens
 			if (!(await checkAccess(user, theReactor))) {
