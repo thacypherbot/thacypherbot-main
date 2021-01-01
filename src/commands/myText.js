@@ -66,7 +66,7 @@ class MyTextCommand extends Command {
 		const FieldsEmbed = new pagination.FieldsEmbed()
 			.setArray(records)
 			.setAuthorizedUsers([message.author.id])
-			.setChannel(message.author.dmChannel)
+			.setChannel(message.author)
 			.setElementsPerPage(3)
 			.setPageIndicator(false)
 			.formatField('\u200b', e => e);
