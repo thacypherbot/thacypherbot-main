@@ -91,7 +91,7 @@ class MyTextCommand extends Command {
 			}
 		);
 		const num = textRecordNumberCollector.first().content;
-		return recordMsgAfterConfirmation(message, records.content[num - 1], record);
+		return recordMsgAfterConfirmation(message, record.content[num - 1], record);
 	}
 }
 
