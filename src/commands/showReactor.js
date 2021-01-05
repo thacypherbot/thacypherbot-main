@@ -18,7 +18,8 @@ class ShowReactorCommand extends Command {
 					type: 'phrase',
 					prompt: {
 						start: 'ID of the reactor please?',
-						retry: 'What is the ID of the reactor?'
+						retry: 'What is the ID of the reactor?',
+						optional: true
 					}
 				}
 			]
