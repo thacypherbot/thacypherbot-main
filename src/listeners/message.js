@@ -1,5 +1,8 @@
 const { Listener } = require('discord-akairo');
 const { Message, MessageEmbed } = require('discord.js');
+const Autor = require('../models/autoReactor');
+const PersonalProfile = require('../models/personalProfile');
+const ReactorProfile = require('../models/reactorProfile');
 const setText = require('../models/setText');
 const textRecords = require('../models/textRecords');
 const recordMsgAfterConfirmation = require('../util/recordMsgAfterConfirmation');
@@ -17,6 +20,48 @@ class MessageListener extends Listener {
 	 */
 	async exec(message) {
 		if (!message.guild) return undefined;
+
+		const foundReactor = await Autor.find();
+		for (const reactor of foundReactor) {
+			if (!reactor.isRunning || reactor.isPoll) continue;
+			if (message.channel.id === reactor.reactorSettings.channel) {
+				const selectedProfile = new ReactorProfile();
+				const exists = await PersonalProfile.exists({ userid: message.author.id });
+				let personProfile = undefined;
+				if (exists) {
+					personProfile = await PersonalProfile.findOne({
+						userid: message.author.id
+					});
+				} else {
+					console.log('person profile not found');
+					personProfile = new PersonalProfile();
+					personProfile.userid = message.author.id;
+				}
+				selectedProfile.userid = message.author.id;
+				selectedProfile.messageid = message.id;
+				selectedProfile.stillRunning = true;
+				selectedProfile.totalVotes = 0;
+				for (const emoji of reactor.emojis) {
+					message.react(emoji);
+					if (!personProfile.emojiData.some(item => item.emojiName === emoji)) {
+						personProfile.emojiData.push({
+							emojiName: emoji,
+							count: 0
+						});
+					}
+					selectedProfile.emojiData.push({
+						emojiName: emoji,
+						count: 0
+					});
+				}
+				selectedProfile.markModified('emojiData');
+				selectedProfile.save().catch(err => console.log(err));
+
+				personProfile.markModified('emojiData');
+				personProfile.save().catch(err => console.log(err));
+			}
+		}
+
 		const guild = await setText.findOne({ guildid: message.guild.id });
 		if (!guild.channels.includes(message.channel.id)) return undefined;
 		if (message.content.split('\n').length < 4) return undefined;
