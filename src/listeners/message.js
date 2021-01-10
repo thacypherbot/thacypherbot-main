@@ -63,7 +63,7 @@ class MessageListener extends Listener {
 		}
 
 		const guild = await setText.findOne({ guildid: message.guild.id });
-		if (!guild.channels.includes(message.channel.id)) return undefined;
+		if (!guild?.channels?.includes(message.channel?.id)) return undefined;
 		if (message.content.split('\n').length < 4) return undefined;
 
 		const date =
