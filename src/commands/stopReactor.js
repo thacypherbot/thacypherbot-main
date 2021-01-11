@@ -72,7 +72,7 @@ class StopReactorCommand extends Command {
 			}
 			return message.channel.send('`Reactor successfully terminated !`');
 		}
-		return undefined;
+		return message.channel.send('`Reactor is already idle !`');
 	}
 }
 

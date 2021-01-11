@@ -30,7 +30,7 @@ module.exports = async (message, textRecordObject, record) => {
 	await reviewText.react('🗑️');
 	const filter = reaction => ['🗒️', '🗑️'].includes(reaction.emoji.name);
 	const reviewReacts = await reviewText.awaitReactions(filter, {
-		max: 1,
+		max: 3,
 		time: 60000,
 		errors: ['time']
 	});

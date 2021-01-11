@@ -91,7 +91,7 @@ class ShowReactorCommand extends Command {
 			for (const doc of foundDocs) {
 				reactorType = doc.isPoll ? '📊 Poll' : '💈 Auto reactor';
 				if (doc.isRunning) {
-					status = `🟢 [running](${doc.reactorSettings.url})`;
+					status = '🟢 running';
 				} else {
 					status = '🟣 idle';
 				}

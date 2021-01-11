@@ -48,6 +48,7 @@ class MessageReactionAddListener extends Listener {
 		};
 
 		const checkAccess = async (user, theReactor) => {
+			if (!theReactor.poll) return true;
 			if (theReactor.pollRole === 'oneRoleArray') {
 				return true;
 			}
@@ -218,11 +219,10 @@ class MessageReactionAddListener extends Listener {
 
 				totalVotes = () => {
 					numberOfVotes = 0;
-					if (theReactor.reactorSettings.isPoll) {
-						for (const elements of theReactor.optionsText) {
-							numberOfVotes += elements.votes;
-						}
+					for (const elements of theReactor.optionsText) {
+						numberOfVotes += elements.votes;
 					}
+
 					return numberOfVotes;
 				};
 				if (theReactor.reactorSettings.isPoll) {
