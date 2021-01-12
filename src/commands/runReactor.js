@@ -108,7 +108,7 @@ class RunReactorCommand extends Command {
 			askTime.setDescription(
 				// prettier-ignore
 				'When do you want to terminate the process of the reactor ?\n' +
-				'`1` - Schedule a time\n`2` - Custom - `$reactorstop <reactoridhere>`'
+				'`1` - Schedule a time\n`2` - Custom - `$stopreactor <reactoridhere>`'
 			);
 
 			const askEndTimeEmbed = await message.channel.send(askTime);
@@ -216,6 +216,9 @@ class RunReactorCommand extends Command {
 			return foundDoc.save().catch(console.log);
 		}
 		if (foundDoc.isPoll) {
+			if(foundDoc.alreadyRan){
+				
+			}
 			const pollEmbed = new MessageEmbed()
 				.setTitle(`📊 ${foundDoc.pollTopic}`)
 				.setColor(foundDoc.pollColor)
@@ -238,6 +241,7 @@ class RunReactorCommand extends Command {
 			};
 			foundDoc.reactorSettings = settings;
 			foundDoc.grandTotal = [];
+			foundDoc.alreadyRan = true
 			foundDoc.markModified('optionsText');
 			foundDoc.markModified('reactorSettings');
 			foundDoc.markModified('grandTotal');

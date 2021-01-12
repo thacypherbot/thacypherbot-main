@@ -25,7 +25,9 @@ const autoSchema = mongoose.Schema({
 	role: String,
 	statsReactionNumber: Number,
 	totalVotes: Number,
-	userid: String
+	userid: String,
+	// eslint-disable-next-line sort-keys
+	alreadyRan: Boolean
 });
 
 module.exports = mongoose.model('Autor', autoSchema);

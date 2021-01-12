@@ -293,7 +293,7 @@ class MessageReactionAddListener extends Listener {
 							statsEmbed = new MessageEmbed().setTitle('Stats Report');
 						}
 						ref = `'http://discordapp.com/channels/723940968843444264/'${theReactor.reactorSettings.channel}/${fetchedMessage.id}`;
-						statReactionData.push(`\n [click here to view the message](${ref})`);
+						statReactionData.push(`\n [to view the message](${ref})`);
 						statsEmbed.addField(
 							// prettier-ignore
 							`Reactor id: \`${theReactor.id}\`` +

@@ -196,6 +196,7 @@ class ReactorCommand extends Command {
 				'https://cdn.discordapp.com/attachments/728671530459856896/728680050295046214/bible.png';
 			messageEmbedObject.boolean = true;
 			statsReactionNumber = await createAndWait(messageEmbedObject);
+			console.log(statsReactionNumber, 'stats reaction number');
 			prop.push(`\n - 📄 Store stats at : ${statsReactionNumber} reactions`);
 			newReactor.statsReactionNumber = parseInt(statsReactionNumber, 10);
 		}
@@ -436,20 +437,20 @@ class ReactorCommand extends Command {
 				}
 				newReactor.markModified('emojis');
 			}
-			newReactor.id = Math.random().toString(20).substr(2, 6);
-
-			const confirmationEmbed = new MessageEmbed()
-				.setColor('#E0FFFF')
-				.setTitle(`Here are you AutoReact/Poll Details\n\n\`\`\`ID: ${newReactor.id} \`\`\``)
-				.setThumbnail('https://cdn.discordapp.com/attachments/728671530459856896/728686591526174760/rocket.png')
-				.addFields({
-					name: 'Properties ',
-					value: prop
-				});
-
-			await newReactor.save();
-			message.channel.send(confirmationEmbed);
 		}
+		newReactor.id = Math.random().toString(20).substr(2, 6);
+
+		const confirmationEmbed = new MessageEmbed()
+			.setColor('#E0FFFF')
+			.setTitle(`Here are you AutoReact/Poll Details\n\n\`\`\`ID: ${newReactor.id} \`\`\``)
+			.setThumbnail('https://cdn.discordapp.com/attachments/728671530459856896/728686591526174760/rocket.png')
+			.addFields({
+				name: 'Properties ',
+				value: prop
+			});
+
+		await newReactor.save();
+		message.channel.send(confirmationEmbed);
 	}
 }
 
