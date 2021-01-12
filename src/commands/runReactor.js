@@ -194,6 +194,7 @@ class RunReactorCommand extends Command {
 			.find()
 			.catch(_err => message.channel.send('No saved reactors found. Please create a reactor using `$reactor`'));
 		for (const item of allReactors) {
+			if (item.isPoll) continue;
 			if (!item.reactorSettings) continue;
 			if (item.reactorSettings.channel === collected.first().mentions.channels.first().id) {
 				return message.channel.send(
@@ -216,8 +217,14 @@ class RunReactorCommand extends Command {
 			return foundDoc.save().catch(console.log);
 		}
 		if (foundDoc.isPoll) {
-			if(foundDoc.alreadyRan){
-				
+			if (foundDoc.alreadyRan) {
+				foundDoc.totalVotes = 0
+				foundDoc.optionsText.forEach(item => {
+					item.votes = 0;
+					item.voterid = [];
+					item.voterNames = [];
+					item.percent = 0;
+				});
 			}
 			const pollEmbed = new MessageEmbed()
 				.setTitle(`📊 ${foundDoc.pollTopic}`)
@@ -241,7 +248,7 @@ class RunReactorCommand extends Command {
 			};
 			foundDoc.reactorSettings = settings;
 			foundDoc.grandTotal = [];
-			foundDoc.alreadyRan = true
+			foundDoc.alreadyRan = true;
 			foundDoc.markModified('optionsText');
 			foundDoc.markModified('reactorSettings');
 			foundDoc.markModified('grandTotal');
