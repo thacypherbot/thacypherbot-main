@@ -216,8 +216,18 @@ class RunReactorCommand extends Command {
 			return foundDoc.save().catch(console.log);
 		}
 		if (foundDoc.isPoll) {
-			if(foundDoc.alreadyRan){
-				
+			if (foundDoc.alreadyRan) {
+				// eslint-disable-next-line no-undef
+				foundDoc.optionsText.forEach(item, () => {
+					// eslint-disable-next-line no-undef
+					item.votes = 0;
+					// eslint-disable-next-line no-undef
+					item.voterid = [];
+					// eslint-disable-next-line no-undef
+					item.voterNames = [];
+					// eslint-disable-next-line no-undef
+					item.percent = 0;
+				});
 			}
 			const pollEmbed = new MessageEmbed()
 				.setTitle(`📊 ${foundDoc.pollTopic}`)
@@ -241,7 +251,7 @@ class RunReactorCommand extends Command {
 			};
 			foundDoc.reactorSettings = settings;
 			foundDoc.grandTotal = [];
-			foundDoc.alreadyRan = true
+			foundDoc.alreadyRan = true;
 			foundDoc.markModified('optionsText');
 			foundDoc.markModified('reactorSettings');
 			foundDoc.markModified('grandTotal');
