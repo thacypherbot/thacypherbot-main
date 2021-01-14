@@ -51,7 +51,6 @@ class ThaCypherBot extends AkairoClient {
 			listenerHandler: this.listenerHandler
 		});
 		this.listenerHandler.loadAll();
-
 		mongoose.connect(
 			process.env.DB_URI,
 			{

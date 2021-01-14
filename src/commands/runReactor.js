@@ -194,6 +194,7 @@ class RunReactorCommand extends Command {
 			.find()
 			.catch(_err => message.channel.send('No saved reactors found. Please create a reactor using `$reactor`'));
 		for (const item of allReactors) {
+			if (item.isPoll) continue;
 			if (!item.reactorSettings) continue;
 			if (item.reactorSettings.channel === collected.first().mentions.channels.first().id) {
 				return message.channel.send(
@@ -217,15 +218,11 @@ class RunReactorCommand extends Command {
 		}
 		if (foundDoc.isPoll) {
 			if (foundDoc.alreadyRan) {
-				// eslint-disable-next-line no-undef
-				foundDoc.optionsText.forEach(item, () => {
-					// eslint-disable-next-line no-undef
+				foundDoc.totalVotes = 0;
+				foundDoc.optionsText.forEach(item => {
 					item.votes = 0;
-					// eslint-disable-next-line no-undef
 					item.voterid = [];
-					// eslint-disable-next-line no-undef
 					item.voterNames = [];
-					// eslint-disable-next-line no-undef
 					item.percent = 0;
 				});
 			}
