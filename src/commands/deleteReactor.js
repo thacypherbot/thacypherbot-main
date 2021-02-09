@@ -35,7 +35,7 @@ class DeleteReactorCommand extends Command {
 			console.log(err);
 			return message.channel.send('An error occurred, please try again.');
 		});
-		await foundReactor.deleteOne({ id }).catch(err => {
+		await Autor.deleteOne({ id }).catch(err => {
 			console.log(err);
 			return message.channel.send('An error occurred, please try again.');
 		});
