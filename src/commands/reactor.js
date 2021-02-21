@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 const { Command } = require('discord-akairo');
 const { Message, MessageEmbed } = require('discord.js');
 const autoReactor = require('../models/autoReactor');
