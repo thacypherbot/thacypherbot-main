@@ -31,10 +31,13 @@ class ReactorCommand extends Command {
 			embed.setThumbnail(messageEmbedObject.thumbnail);
 			const collectThisMsg = await message.channel.send(embed);
 			if (messageEmbedObject.boolean) {
-				const collected = await collectThisMsg.channel.awaitMessages(m => m.author.id === message.author.id, {
-					max: 1,
-					time: 200000
-				});
+				const collected = await collectThisMsg.channel.awaitMessages(
+					m => m.author.id === message.author.id,
+					{
+						max: 1,
+						time: 200000
+					}
+				);
 				if (messageEmbedObject.image) {
 					return collected?.first()?.attachments?.first()?.url;
 				}
@@ -43,19 +46,24 @@ class ReactorCommand extends Command {
 			for (const emoji of messageEmbedObject.emojiArray) {
 				await collectThisMsg.react(emoji);
 			}
-			const collected = await collectThisMsg.awaitReactions((r, u) => u.id === message.author.id, {
-				max: 1,
-				time: 200000,
-				errors: ['time']
-			});
+			const collected = await collectThisMsg.awaitReactions(
+				(r, u) => u.id === message.author.id,
+				{
+					max: 1,
+					time: 200000,
+					errors: ['time']
+				}
+			);
 			return collected.first().emoji.name;
 		};
 		const messageEmbedObject = {
 			title: 'Auto reactor and Polls',
 			topic: 'Channel select',
-			text: 'Please enter the name of the channel you wish to initiate Auto Reactor/ Polls.',
+			text:
+        'Please enter the name of the channel you wish to initiate Auto Reactor/ Polls.',
 			color: '#9400D3',
-			thumbnail: 'https://cdn.discordapp.com/attachments/728671530459856896/728677723198980167/television.png',
+			thumbnail:
+        'https://cdn.discordapp.com/attachments/728671530459856896/728677723198980167/television.png',
 			boolean: true,
 			emojiArray: []
 		};
@@ -64,7 +72,7 @@ class ReactorCommand extends Command {
 		messageEmbedObject.text = '\n - ``1️`` - Auto Reactor \n - ``2`` - Poll';
 		messageEmbedObject.color = '#9400D3';
 		messageEmbedObject.thumbnail =
-			'https://cdn.discordapp.com/attachments/728671530459856896/728677723198980167/television.png';
+      'https://cdn.discordapp.com/attachments/728671530459856896/728677723198980167/television.png';
 		messageEmbedObject.boolean = true;
 
 		const AutoOrPoll = await createAndWait(messageEmbedObject);
@@ -73,7 +81,7 @@ class ReactorCommand extends Command {
 			messageEmbedObject.text = 'Please reply with poll topic';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
+        'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
 			messageEmbedObject.boolean = true;
 			const pollTopic = await createAndWait(messageEmbedObject);
 			newReactor.pollTopic = pollTopic;
@@ -84,7 +92,7 @@ class ReactorCommand extends Command {
 			messageEmbedObject.text = 'How many poll options do you want to add.';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
+        'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
 
 			const pollOptions = await createAndWait(messageEmbedObject);
 			newReactor.optionsText = [];
@@ -105,10 +113,10 @@ class ReactorCommand extends Command {
 
 			messageEmbedObject.topic = 'Poll';
 			messageEmbedObject.text =
-				'Please reply with poll color \n [view applicable colors here](https://discord.js.org/#/docs/main/stable/typedef/ColorResolvable)';
+        'Please reply with poll color \n [view applicable colors here](https://discord.js.org/#/docs/main/stable/typedef/ColorResolvable)';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
+        'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
 			const pollColor = await createAndWait(messageEmbedObject);
 			newReactor.pollColor = pollColor.toUpperCase();
 			prop.push(`\n - 📄 Poll Color : ${pollColor}`);
@@ -121,7 +129,7 @@ class ReactorCommand extends Command {
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.image = true;
 			messageEmbedObject.thumbnail =
-				'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
+        'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
 
 			const pollImageCheck = await createAndWait(messageEmbedObject);
 			const pollImage = pollImageCheck === undefined ? false : pollImageCheck;
@@ -131,10 +139,11 @@ class ReactorCommand extends Command {
 			}
 			messageEmbedObject.image = false;
 			messageEmbedObject.topic = 'Poll';
-			messageEmbedObject.text = 'Reply with ``yes`` for anonymous voting and ``no`` for public voting.';
+			messageEmbedObject.text =
+        'Reply with ``yes`` for anonymous voting and ``no`` for public voting.';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
+        'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
 
 			const isAnon = await createAndWait(messageEmbedObject);
 			newReactor.anon = isAnon === 'yes';
@@ -145,14 +154,14 @@ class ReactorCommand extends Command {
 
 			messageEmbedObject.topic = 'What roles should have access to the poll';
 			messageEmbedObject.text =
-				'1️ - Everyone\n' +
-				'2️ - New Heads - `Crowd, prospect, fan`\n' +
-				'3️ - Heads - `Enthusiast, challenger, regular`\n' +
-				'4 - Old Heads - `active, pro, vet, titan, legend`\n' +
-				'5 - Supporter';
+        '1️ - Everyone\n' +
+        '2️ - New Heads - `Crowd, prospect, fan`\n' +
+        '3️ - Heads - `Enthusiast, challenger, regular`\n' +
+        '4 - Old Heads - `active, pro, vet, titan, legend`\n' +
+        '5 - Supporter';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
+        'https://media.discordapp.net/attachments/763795278079721482/765232054228090880/unknown.png';
 			messageEmbedObject.boolean = true;
 
 			const pollRole = await createAndWait(messageEmbedObject);
@@ -179,10 +188,11 @@ class ReactorCommand extends Command {
 		}
 
 		messageEmbedObject.topic = 'Triggers';
-		messageEmbedObject.text = 'Do you want enable stat point condition \n ``1`` - Yes \n ``2`` - No';
+		messageEmbedObject.text =
+      'Do you want enable stat point condition \n ``1`` - Yes \n ``2`` - No';
 		messageEmbedObject.color = '#9400D3';
 		messageEmbedObject.thumbnail =
-			'https://cdn.discordapp.com/attachments/728671530459856896/728680050295046214/bible.png';
+      'https://cdn.discordapp.com/attachments/728671530459856896/728680050295046214/bible.png';
 		messageEmbedObject.boolean = true;
 
 		const triggerOneEmoji = await createAndWait(messageEmbedObject);
@@ -190,10 +200,11 @@ class ReactorCommand extends Command {
 		if (triggerOneEmoji === '1') {
 			prop.push('\n - 📄 Stat point : yes');
 			messageEmbedObject.topic = 'Trigger options';
-			messageEmbedObject.text = 'Please enter the number of reactions after which the stats are to be stored.';
+			messageEmbedObject.text =
+        'Please enter the number of reactions after which the stats are to be stored.';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://cdn.discordapp.com/attachments/728671530459856896/728680050295046214/bible.png';
+        'https://cdn.discordapp.com/attachments/728671530459856896/728680050295046214/bible.png';
 			messageEmbedObject.boolean = true;
 			statsReactionNumber = await createAndWait(messageEmbedObject);
 			console.log(statsReactionNumber, 'stats reaction number');
@@ -203,11 +214,11 @@ class ReactorCommand extends Command {
 		if (!newReactor.isPoll) {
 			messageEmbedObject.topic = 'Triggers';
 			messageEmbedObject.text =
-				'Do you want to end reaction collector on a post by reacting with a certain emoji\n' +
-				'`1` - Yes\n`2` - No';
+        'Do you want to end reaction collector on a post by reacting with a certain emoji\n' +
+        '`1` - Yes\n`2` - No';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://cdn.discordapp.com/attachments/728671530459856896/728680480559595630/love.png';
+        'https://cdn.discordapp.com/attachments/728671530459856896/728680480559595630/love.png';
 			messageEmbedObject.boolean = true;
 			const triggerTwoEmoji = await createAndWait(messageEmbedObject);
 			prop.push(`\n - 📊 End reaction with Emoji : ${triggerTwoEmoji}`);
@@ -215,10 +226,10 @@ class ReactorCommand extends Command {
 			if (triggerTwoEmoji === '1') {
 				messageEmbedObject.topic = 'Trigger options';
 				messageEmbedObject.text =
-					'Please react this message with the reaction you would want to trigger this action';
+          'Please react this message with the reaction you would want to trigger this action';
 				messageEmbedObject.color = '#9400D3';
 				messageEmbedObject.thumbnail =
-					'https://cdn.discordapp.com/attachments/728671530459856896/728680480559595630/love.png';
+          'https://cdn.discordapp.com/attachments/728671530459856896/728680480559595630/love.png';
 				messageEmbedObject.boolean = false;
 				messageEmbedObject.emojiArray = [];
 				const triggerTwoEmoji = await createAndWait(messageEmbedObject);
@@ -228,32 +239,40 @@ class ReactorCommand extends Command {
 
 			messageEmbedObject.topic = 'Trigger';
 			messageEmbedObject.text =
-				'Do you want to end reaction collector on a post after a certain reactions are reached\n' +
-				'`1` - Yes\n`2` - No';
+        'Do you want to end reaction collector on a post after a certain reactions are reached\n' +
+        '`1` - Yes\n`2` - No';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://cdn.discordapp.com/attachments/728671530459856896/728680480559595630/love.png';
+        'https://cdn.discordapp.com/attachments/728671530459856896/728680480559595630/love.png';
 			messageEmbedObject.boolean = true;
 			const triggerThreeEmoji = await createAndWait(messageEmbedObject);
 
 			prop.push(`\n - 🎬 End reaction after some cap : ${triggerThreeEmoji}`);
 			if (triggerThreeEmoji === '1') {
 				messageEmbedObject.topic = 'Trigger options';
-				messageEmbedObject.text = 'Please enter the number of reactions to trigger this action';
+				messageEmbedObject.text =
+          'Please enter the number of reactions to trigger this action';
 				messageEmbedObject.color = '#9400D3';
 				messageEmbedObject.thumbnail =
-					'https://media.discordapp.net/attachments/728671530459856896/728681225971171389/kindness.png';
+          'https://media.discordapp.net/attachments/728671530459856896/728681225971171389/kindness.png';
 				messageEmbedObject.boolean = true;
-				const triggerThreeStatsMsgCollector = await createAndWait(messageEmbedObject);
-				prop.push(`\n - 🎬 End reaction after cap : ${triggerThreeStatsMsgCollector}`);
-				newReactor.endReactionNumber = parseInt(triggerThreeStatsMsgCollector, 10);
+				const triggerThreeStatsMsgCollector = await createAndWait(
+					messageEmbedObject
+				);
+				prop.push(
+					`\n - 🎬 End reaction after cap : ${triggerThreeStatsMsgCollector}`
+				);
+				newReactor.endReactionNumber = parseInt(
+					triggerThreeStatsMsgCollector,
+					10
+				);
 			}
 			messageEmbedObject.topic = 'Reaction options';
 			messageEmbedObject.text =
-				'Do you want to add custom emojis or select from the presets \n ``1`` - Custom \n ``2`` - Preset';
+        'Do you want to add custom emojis or select from the presets \n ``1`` - Custom \n ``2`` - Preset';
 			messageEmbedObject.color = '#9400D3';
 			messageEmbedObject.thumbnail =
-				'https://cdn.discordapp.com/attachments/728671530459856896/728677723198980167/television.png';
+        'https://cdn.discordapp.com/attachments/728671530459856896/728677723198980167/television.png';
 			messageEmbedObject.boolean = true;
 
 			const reactCusOrPreMsgEmoji = await createAndWait(messageEmbedObject);
@@ -262,10 +281,10 @@ class ReactorCommand extends Command {
 			if (reactCusOrPreMsgEmoji === '2') {
 				messageEmbedObject.topic = 'Please choose one of the preset options';
 				messageEmbedObject.text =
-					'1 - ``✅`` - ``❎`` \n 2 - ``👍`` - ``🤐`` - `` 👎 `` \n 3 - ``😍`` - ``👍`` - ``🤐`` - `` 👎 `` - ``🤢``';
+          '1 - ``✅`` - ``❎`` \n 2 - ``👍`` - ``🤐`` - `` 👎 `` \n 3 - ``😍`` - ``👍`` - ``🤐`` - `` 👎 `` - ``🤢``';
 				messageEmbedObject.color = '#9400D3';
 				messageEmbedObject.thumbnail =
-					'https://cdn.discordapp.com/attachments/728671530459856896/728679330095300628/donate.png';
+          'https://cdn.discordapp.com/attachments/728671530459856896/728679330095300628/donate.png';
 				messageEmbedObject.boolean = true;
 				const finalPreset = await createAndWait(messageEmbedObject);
 				if (finalPreset === '1') {
@@ -295,16 +314,18 @@ class ReactorCommand extends Command {
 			if (reactCusOrPreMsgEmoji === '1') {
 				messageEmbedObject.topic = 'Reactions to be done';
 				messageEmbedObject.text =
-					'Please select the number of reactions you want to be reacted on the messages. \n ``MINIMUM : 2``';
+          'Please select the number of reactions you want to be reacted on the messages. \n ``MINIMUM : 2``';
 				messageEmbedObject.color = '#9400D3';
 				messageEmbedObject.thumbnail =
-					'https://cdn.discordapp.com/attachments/728671530459856896/728679330095300628/donate.png';
+          'https://cdn.discordapp.com/attachments/728671530459856896/728679330095300628/donate.png';
 				messageEmbedObject.boolean = true;
 
 				const finalNum = await createAndWait(messageEmbedObject);
 				const finalNum1 = parseInt(finalNum, 10);
 				if (finalNum1 === 2) {
-					const reactionSelect = new MessageEmbed().setTitle('Auto reactions creator');
+					const reactionSelect = new MessageEmbed().setTitle(
+						'Auto reactions creator'
+					);
 
 					reactionSelect.addField(
 						'Reactions to be done',
@@ -320,20 +341,36 @@ class ReactorCommand extends Command {
 					reactSelectMsg.react('⬇️');
 
 					const [reactionOne, reactionTwo] = (
-						await reactSelectMsg.awaitReactions((_, u) => u.id === message.author.id, {
-							max: finalNum,
-							time: 200000,
-							errors: ['time']
-						})
+						await reactSelectMsg.awaitReactions(
+							(_, u) => u.id === message.author.id,
+							{
+								max: finalNum,
+								time: 200000,
+								errors: ['time']
+							}
+						)
 					).first(2);
-					prop.push(`\n - 🛡️ Custom emojis : ${reactionOne.emoji.name} - ${reactionTwo.emoji.name}`);
-					newReactor.emojis.push(reactionOne.emoji.name);
-					newReactor.emojis.push(reactionTwo.emoji.name);
+					prop.push(
+						`\n - 🛡️ Custom emojis : ${reactionOne.emoji.name} - ${reactionTwo.emoji.name}`
+					);
+					const reactionFinalOne =
+            reactionOne.emoji.id === null
+            	? reactionOne.emoji.name
+            	: reactionOne.emoji.id;
+					const reactionFinalTwo =
+            reactionTwo.emoji.id === null
+            	? reactionTwo.emoji.name
+            	: reactionTwo.emoji.id;
+					newReactor.emojis.push(reactionFinalOne);
+					newReactor.emojis.push(reactionFinalTwo);
+					console.log(reactionOne.emoji);
 				}
 				// ----------------------------
 
 				if (finalNum1 === 3) {
-					const reactionSelect = new MessageEmbed().setTitle('Auto reactions creator');
+					const reactionSelect = new MessageEmbed().setTitle(
+						'Auto reactions creator'
+					);
 
 					reactionSelect.addField(
 						'Reactions to be done',
@@ -346,15 +383,27 @@ class ReactorCommand extends Command {
 					const reactSelectMsg = await message.channel.send(reactionSelect);
 
 					const [reactionOne, reactionTwo, reactionThree] = (
-						await reactSelectMsg.awaitReactions((_, u) => u.id === message.author.id, {
-							max: finalNum,
-							time: 200000,
-							errors: ['time']
-						})
+						await reactSelectMsg.awaitReactions(
+							(_, u) => u.id === message.author.id,
+							{
+								max: finalNum,
+								time: 200000,
+								errors: ['time']
+							}
+						)
 					).first(3);
-					const reactionFinalOne = reactionOne.emoji.name;
-					const reactionFinalTwo = reactionTwo.emoji.name;
-					const reactionFinalThree = reactionThree.emoji.name;
+					const reactionFinalOne =
+            reactionOne.emoji.id === null
+            	? reactionOne.emoji.name
+            	: reactionOne.emoji.id;
+					const reactionFinalTwo =
+            reactionTwo.emoji.id === null
+            	? reactionTwo.emoji.name
+            	: reactionTwo.emoji.id;
+					const reactionFinalThree =
+            reactionThree.emoji.id === null
+            	? reactionThree.emoji.name
+            	: reactionThree.emoji.id;
 					prop.push(
 						`\n - 🛡️ Custom emojis : ${reactionFinalOne} - ${reactionFinalTwo} - ${reactionFinalThree}`
 					);
@@ -363,7 +412,9 @@ class ReactorCommand extends Command {
 					newReactor.emojis.push(reactionFinalThree);
 				}
 				if (finalNum1 === 4) {
-					const reactionSelect = new MessageEmbed().setTitle('Auto reactions creator');
+					const reactionSelect = new MessageEmbed().setTitle(
+						'Auto reactions creator'
+					);
 
 					reactionSelect.addField(
 						'Reactions to be done',
@@ -376,21 +427,36 @@ class ReactorCommand extends Command {
 					const reactSelectMsg = await message.channel.send(reactionSelect);
 
 					const [reactionOne, reactionTwo, reactionThree, reactionFour] = (
-						await reactSelectMsg.awaitReactions((_, u) => u.id === message.author.id, {
-							max: finalNum,
-							time: 200000,
-							errors: ['time']
-						})
+						await reactSelectMsg.awaitReactions(
+							(_, u) => u.id === message.author.id,
+							{
+								max: finalNum,
+								time: 200000,
+								errors: ['time']
+							}
+						)
 					).first(4);
-					const reactionFinalOne = reactionOne.emoji.name;
-					const reactionFinalTwo = reactionTwo.emoji.name;
-					const reactionFinalThree = reactionThree.emoji.name;
-					const reactionFinalFour = reactionFour.emoji.name;
+					const reactionFinalOne =
+            reactionOne.emoji.id === null
+            	? reactionOne.emoji.name
+            	: reactionOne.emoji.id;
+					const reactionFinalTwo =
+            reactionTwo.emoji.id === null
+            	? reactionTwo.emoji.name
+            	: reactionTwo.emoji.id;
+					const reactionFinalThree =
+            reactionThree.emoji.id === null
+            	? reactionThree.emoji.name
+            	: reactionThree.emoji.id;
+					const reactionFinalFour =
+            reactionFour.emoji.id === null
+            	? reactionFour.emoji.name
+            	: reactionFour.emoji.id;
 					prop.push(
 						`\n - 🛡️ Custom emojis : ${reactionFinalOne} ` +
-							`- ${reactionFinalTwo} ` +
-							`- ${reactionFinalThree} ` +
-							`- ${reactionFinalFour}`
+              `- ${reactionFinalTwo} ` +
+              `- ${reactionFinalThree} ` +
+              `- ${reactionFinalFour}`
 					);
 					newReactor.emojis.push(reactionFinalOne);
 					newReactor.emojis.push(reactionFinalTwo);
@@ -398,7 +464,9 @@ class ReactorCommand extends Command {
 					newReactor.emojis.push(reactionFinalFour);
 				}
 				if (finalNum1 === 5) {
-					const reactionSelect = new MessageEmbed().setTitle('Auto reactions creator');
+					const reactionSelect = new MessageEmbed().setTitle(
+						'Auto reactions creator'
+					);
 
 					reactionSelect.addField(
 						'Reactions to be done',
@@ -410,24 +478,48 @@ class ReactorCommand extends Command {
 					);
 					const reactSelectMsg = await message.channel.send(reactionSelect);
 
-					const [reactionOne, reactionTwo, reactionThree, reactionFour, reactionFive] = (
-						await reactSelectMsg.awaitReactions((_, u) => u.id === message.author.id, {
-							max: finalNum,
-							time: 200000,
-							errors: ['time']
-						})
+					const [
+						reactionOne,
+						reactionTwo,
+						reactionThree,
+						reactionFour,
+						reactionFive
+					] = (
+						await reactSelectMsg.awaitReactions(
+							(_, u) => u.id === message.author.id,
+							{
+								max: finalNum,
+								time: 200000,
+								errors: ['time']
+							}
+						)
 					).first(5);
-					const reactionFinalOne = reactionOne.emoji.name;
-					const reactionFinalTwo = reactionTwo.emoji.name;
-					const reactionFinalThree = reactionThree.emoji.name;
-					const reactionFinalFour = reactionFour.emoji.name;
-					const reactionFinalFive = reactionFive.emoji.name;
+					const reactionFinalOne =
+            reactionOne.emoji.id === null
+            	? reactionOne.emoji.name
+            	: reactionOne.emoji.id;
+					const reactionFinalTwo =
+            reactionTwo.emoji.id === null
+            	? reactionTwo.emoji.name
+            	: reactionTwo.emoji.id;
+					const reactionFinalThree =
+            reactionThree.emoji.id === null
+            	? reactionThree.emoji.name
+            	: reactionThree.emoji.id;
+					const reactionFinalFour =
+            reactionFour.emoji.id === null
+            	? reactionFour.emoji.name
+            	: reactionFour.emoji.id;
+					const reactionFinalFive =
+            reactionFive.emoji.id === null
+            	? reactionFive.emoji.name
+            	: reactionFive.emoji.id;
 					prop.push(
 						`\n - 🛡️ Custom emojis : ${reactionFinalOne} ` +
-							`- ${reactionFinalTwo} ` +
-							`- ${reactionFinalThree} ` +
-							`- ${reactionFinalFour} ` +
-							`- ${reactionFinalFive}`
+              `- ${reactionFinalTwo} ` +
+              `- ${reactionFinalThree} ` +
+              `- ${reactionFinalFour} ` +
+              `- ${reactionFinalFive}`
 					);
 					newReactor.emojis.push(reactionFinalOne);
 					newReactor.emojis.push(reactionFinalTwo);
@@ -442,8 +534,12 @@ class ReactorCommand extends Command {
 
 		const confirmationEmbed = new MessageEmbed()
 			.setColor('#E0FFFF')
-			.setTitle(`Here are you AutoReact/Poll Details\n\n\`\`\`ID: ${newReactor.id} \`\`\``)
-			.setThumbnail('https://cdn.discordapp.com/attachments/728671530459856896/728686591526174760/rocket.png')
+			.setTitle(
+				`Here are you AutoReact/Poll Details\n\n\`\`\`ID: ${newReactor.id} \`\`\``
+			)
+			.setThumbnail(
+				'https://cdn.discordapp.com/attachments/728671530459856896/728686591526174760/rocket.png'
+			)
 			.addFields({
 				name: 'Properties ',
 				value: prop
