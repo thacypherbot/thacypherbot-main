@@ -93,6 +93,9 @@ class MessageListener extends Listener {
 			textRecordTitle.setDescription(
 				'Please reply to this message with a title no more than 25 characters. You have 30 seconds.'
 			);
+			textRecordTitle.setFooter(
+				' Reply with ``delete`` if you do not wish to save this'
+			);
 			textRecordTitle.setThumbnail(
 				'https://media.discordapp.net/attachments/748005515992498297/756094502535692338/title.png?width=100&height=100'
 			);
@@ -109,11 +112,17 @@ class MessageListener extends Listener {
 				}
 			);
 
+			if (textRecordTitleMessageCollector.first().content === 'delete') {
+				return 'deleted';
+			}
+
 			return textRecordTitleMessageCollector.first()
 				? textRecordTitleMessageCollector.first().content
 				: date;
 		};
-
+		if (await textRecordConfirmation() === 'deleted') {
+			return message.channel.send('Deleted.');
+		}
 		if (await textRecords.exists({ userid: message.author.id })) {
 			const record = await textRecords.findOne({ userid: message.author.id });
 			const title = await textRecordConfirmation();
