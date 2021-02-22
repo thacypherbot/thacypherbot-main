@@ -94,14 +94,12 @@ class MessageListener extends Listener {
 			textRecordTitle.setDescription(
 				'Please reply to this message with a title no more than 25 characters. You have 30 seconds.'
 			);
-			textRecordTitle.setFooter(
-				' Reply with ``delete`` if you do not wish to save this'
-			);
 			textRecordTitle.setThumbnail(
 				'https://media.discordapp.net/attachments/748005515992498297/756094502535692338/title.png?width=100&height=100'
 			);
 			textRecordTitle.setFooter(
-				`🔺 If you fail to reply with a title, it will be set to ${date} by default.`
+				// eslint-disable-next-line max-len
+				`🔺 If you fail to reply with a title, it will be set to ${date} by default. Reply with \`\`delete\`\` if you do not wish to save this`
 			);
 			textRecordTitle.setColor('#00FFFF');
 			const textRecordTitleMessage = await message.author.send(textRecordTitle);
@@ -122,7 +120,7 @@ class MessageListener extends Listener {
 			const record = await textRecords.findOne({ userid: message.author.id });
 			const title = await textRecordConfirmation();
 			if (title == 'delete') {
-				return message.author.send('message deleted');
+				return message.author.send('recording deleted');
 			}
 			const obj = {
 				date,
@@ -141,7 +139,7 @@ class MessageListener extends Listener {
 		const record = new textRecords();
 		const title = await textRecordConfirmation();
 		if (title == 'delete') {
-			return message.author.send('message deleted');
+			return message.author.send('recording deleted');
 		}
 		const obj = {
 			date,
