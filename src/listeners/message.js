@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 const { Listener } = require('discord-akairo');
 const { Message, MessageEmbed } = require('discord.js');
 const Autor = require('../models/autoReactor');
@@ -100,7 +101,7 @@ class MessageListener extends Listener {
 				'https://media.discordapp.net/attachments/748005515992498297/756094502535692338/title.png?width=100&height=100'
 			);
 			textRecordTitle.setFooter(
-				`🔺 If you fail to reply with a title, it will be set to ${date} by default`
+				`🔺 If you fail to reply with a title, it will be set to ${date} by default.`
 			);
 			textRecordTitle.setColor('#00FFFF');
 			const textRecordTitleMessage = await message.author.send(textRecordTitle);
@@ -112,20 +113,17 @@ class MessageListener extends Listener {
 				}
 			);
 
-			if (textRecordTitleMessageCollector.first().content === 'delete') {
-				return 'deleted';
-			}
-
 			return textRecordTitleMessageCollector.first()
 				? textRecordTitleMessageCollector.first().content
 				: date;
 		};
-		if (await textRecordConfirmation() === 'deleted') {
-			return message.channel.send('Deleted.');
-		}
+
 		if (await textRecords.exists({ userid: message.author.id })) {
 			const record = await textRecords.findOne({ userid: message.author.id });
 			const title = await textRecordConfirmation();
+			if (title == 'delete') {
+				return message.author.send('message deleted');
+			}
 			const obj = {
 				date,
 				title,
@@ -142,6 +140,9 @@ class MessageListener extends Listener {
 
 		const record = new textRecords();
 		const title = await textRecordConfirmation();
+		if (title == 'delete') {
+			return message.author.send('message deleted');
+		}
 		const obj = {
 			date,
 			title,

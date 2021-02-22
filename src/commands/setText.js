@@ -17,7 +17,7 @@ class SetTextCommand extends Command {
 				},
 				{
 					id: 'channel',
-					match: 'textChannel'
+					type: 'textChannel'
 				}
 			],
 			channel: 'guild',
@@ -35,7 +35,9 @@ class SetTextCommand extends Command {
 	 */
 	async exec(message, { method, channel }) {
 		const check = await setText.exists({ guildid: message.guild.id });
-		const guild = check ? await setText.findOne({ guildid: message.guild.id }) : new setText();
+		const guild = check
+			? await setText.findOne({ guildid: message.guild.id })
+			: new setText();
 
 		if (method === 'add') {
 			guild.guildid = message.guild.id;
@@ -47,21 +49,31 @@ class SetTextCommand extends Command {
 						.setTitle('📀 Channels recording texts.')
 						.setDescription(`✅ ${channel} has been set to record texts.`)
 						.setColor('#800080')
-						.addField('Channels:', `${guild.channels.map(ch => `> <#${ch}>`).join('\n')}`);
+						.addField(
+							'Channels:',
+							`${guild.channels.map(ch => `> <#${ch}>`).join('\n')}`
+						);
 					message.channel.send(confirmation);
 				})
 				.catch(() => message.channel.send('Something went wrong...'));
 		}
 		if (method === 'remove') {
 			guild.channels = guild.channels.filter(ch => ch !== channel.id);
-			return guild.save().then(() => message.channel.send('Channel removed successfully!'));
+			return guild
+				.save()
+				.then(() => message.channel.send('Channel removed successfully!'));
 		}
 		if (method === 'view') {
 			return message.channel.send({
 				embed: {
 					title: '📀 Channels recording texts.',
 					color: 0x800080,
-					fields: [{ name: 'Channels:', value: `${guild.channels.map(ch => `> <#${ch}>`).join('\n')}` }]
+					fields: [
+						{
+							name: 'Channels:',
+							value: `${guild.channels.map(ch => `> <#${ch}>`).join('\n')}`
+						}
+					]
 				}
 			});
 		}
