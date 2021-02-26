@@ -8,7 +8,7 @@ const { Message, MessageEmbed } = require('discord.js');
 const schedule = require('node-schedule');
 let running = 0;
 let runningTimers = [];
-class ProfileCommand extends Command {
+class TimerCommand extends Command {
 	constructor() {
 		super('timer', {
 			aliases: ['timer'],
@@ -172,4 +172,4 @@ class ProfileCommand extends Command {
 	}
 }
 
-module.exports = ProfileCommand;
+module.exports = TimerCommand;
