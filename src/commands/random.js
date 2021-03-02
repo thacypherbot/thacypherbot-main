@@ -28,10 +28,13 @@ class RandomCommand extends Command {
 		let fieldString = 'Generating a random word...';
 		randomWordEmbed.addField('word ', fieldString);
 		const randomWordMsg = await message.channel.send(randomWordEmbed);
-		const randomWord = await axios.get(
-			'https://random-word-api.herokuapp.com/word'
+		let randomWord;
+		randomWord = await axios.get(
+			'https://random-word-api.herokuapp.com/word?number=5'
 		);
-		fieldString = randomWord.data;
+
+		// eslint-disable-next-line max-len
+		fieldString = `__***${randomWord.data[0]}***__ \n - \n __***${randomWord.data[1]}***__ \n - \n __***${randomWord.data[2]}***__ \n - \n __***${randomWord.data[3]}***__ \n - \n __***${randomWord.data[4]}***__`;
 		const editedEmbed = randomWordEmbed.spliceFields(0, 1);
 		editedEmbed.addField('word ', fieldString);
 		randomWordMsg.edit(editedEmbed);
