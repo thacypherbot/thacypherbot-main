@@ -1,6 +1,5 @@
 const { Command } = require('discord-akairo');
 const { Message, MessageEmbed } = require('discord.js');
-const WordGen = require('../models/wordGenData');
 const axios = require('axios');
 let running = false;
 // eslint-disable-next-line init-declarations
