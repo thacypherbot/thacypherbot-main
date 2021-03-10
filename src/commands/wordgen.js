@@ -125,7 +125,7 @@ class RandomCommand extends Command {
 				clearInterval(theInterval);
 				running = false;
 				message.channel.send('Word gen terminated.');
-			}, autoofftime * 1000);
+			}, autoofftime * 3600000);
 		}
 		if (method === 'stop') {
 			if (!running) {
