@@ -21,6 +21,12 @@ class RandomCommand extends Command {
 					id: 'time',
 					type: 'number',
 					default: 5
+				},
+				{
+					id: 'difficulty',
+					type: 'string',
+					default: 'ez'
+
 				}
 			],
 			category: 'general',
@@ -33,11 +39,12 @@ class RandomCommand extends Command {
 
 	/**
 	 * @param {Message} message - The message object.
-	 * @param {{method : 'start' | 'stop'; time: Number}}
+	 * @param {{method : 'start' | 'stop' ; time: Number; difficulty: String}}
 	 */
 
-	async exec(message, { method, time }) {
+	async exec(message, { method, time, difficulty }) {
 		console.log('time', time);
+		console.log('difficulty', difficulty)
 		// eslint-disable-next-line init-declarations
 
 		if (method === 'start') {
@@ -55,17 +62,21 @@ class RandomCommand extends Command {
 			randomWordEmbed.addField('word ', fieldString);
 			const randomWordMsg = await message.channel.send(randomWordEmbed);
 			// eslint-disable-next-line init-declarations
-			const selectRandomWord = someArray =>
-				someArray[Math.floor(Math.random() * someArray.length)];
+			const selectRandomWord = async someArray => {
+					return someArray[Math.floor(Math.random() * someArray.length)];
+				}
 			// eslint-disable-next-line prefer-const
 			let randomWordArray = require('fs')
 				.readFileSync('words')
 				.toString()
 				.trim()
 				.split('\r\n');
+			let randomWord
 			console.log(randomWordArray, 'array');
 			console.log(selectRandomWord(randomWordArray), 'random word');
-			theInterval = setInterval(() => {
+			theInterval = setInterval(async () => {
+				if(difficulty == "ez"){
+					
 				// eslint-disable-next-line max-len
 				fieldString = `__***${selectRandomWord(
 					randomWordArray
@@ -76,6 +87,15 @@ class RandomCommand extends Command {
 				)}***__ \n - \n __***${selectRandomWord(
 					randomWordArray
 				)}***__ \n - \n __***${selectRandomWord(randomWordArray)}***__`;
+				}
+				else if ( difficulty == "real"){
+					randomWord = await axios.get(
+						'https://random-word-api.herokuapp.com/word?number=5'
+					);
+	
+					// eslint-disable-next-line max-len
+					fieldString = `__***${randomWord.data[0]}***__ \n - \n __***${randomWord.data[1]}***__ \n - \n __***${randomWord.data[2]}***__ \n - \n __***${randomWord.data[3]}***__ \n - \n __***${randomWord.data[4]}***__`;
+				}
 				const editedEmbed = randomWordEmbed.spliceFields(0, 1);
 				editedEmbed.addField('word ', fieldString);
 				randomWordMsg.edit(editedEmbed);
