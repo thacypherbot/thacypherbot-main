@@ -90,8 +90,6 @@ class RandomCommand extends Command {
 				.trim()
 				.split('\r\n');
 			let randomWord;
-			console.log(randomWordArray, 'array');
-			console.log(selectRandomWord(randomWordArray), 'random word');
 			theInterval = setInterval(async () => {
 				if (difficulty === 'ez') {
 					// eslint-disable-next-line max-len
