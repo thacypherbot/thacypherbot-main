@@ -1,0 +1,1 @@
+A class withing the [[Folder Models]] folder
