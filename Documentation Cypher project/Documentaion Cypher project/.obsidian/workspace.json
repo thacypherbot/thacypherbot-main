@@ -13,13 +13,38 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Class .json/Class rep.js.md",
+                "file": "Class .js/Class index.js.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "35a86a225834adbf",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Class .js/Class bar.js.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "b8bb876abe059361",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Class .js/Class rep.js 1.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -85,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Class .json/Class rep.js.md",
+                "file": "Class .js/Class rep.js 1.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Class .json/Class rep.js.md",
+                "file": "Class .js/Class rep.js 1.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Class .json/Class rep.js.md"
+                "file": "Class .js/Class rep.js 1.md"
               }
             }
           }
@@ -146,20 +171,33 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "85d308d3a4fcaa0f",
+  "active": "b8bb876abe059361",
   "lastOpenFiles": [
-    "Class .json/Class reps.js.md",
-    "Class .json/Class bar.js.md",
-    "2024-03-19.md",
-    "Class .js/Class lol.js.md",
+    "Class .js/Class reps.js 1.md",
     "Filestructure/Folder thacypherbot-main.md",
+    "test",
+    "Class .js/Class lol.js.md",
+    "Class .js/Class bar.js.md",
+    "Class .json/Class package.json.md",
+    "Class .js/Class autoreactor.js.md",
+    "Class .js/Class convertMS.js.md",
+    "Class .js/Class mytext.js.md",
+    "Class .js/Class personalprofile.js 1.md",
+    "Class .js/Class polldata.js 1.md",
+    "Class .js/Class profile.js 1 1.md",
+    "Class .js/Class profile.js 2.md",
+    "Class .js/Class reactor.js 1.md",
+    "Class .js/Class textrecords.js.md",
+    "Class .js/Class serverrecordings.js.md",
+    "Class .js/Class newDate.js.md",
+    "Class .js/Class flip.js.md",
+    "Class .json/Class example.config.json.md",
+    "Class .js/Class index.js.md",
+    "Class .js/Class myrecordings.js.md",
+    "Class .js/Class runreactor.js.md",
     "2024-03-12.md",
     "Documentation contribution diary/2024-03-09.md",
     "Documentation contribution diary",
-    "The Cypher.md",
-    "Class .json/Class package.json.md",
-    "Class .json/Class example.config.json.md",
-    "Class .json/Class package-lock.json.md",
-    "Class .json/Class audio.json.md"
+    "The Cypher.md"
   ]
 }

@@ -1,22 +1,18 @@
 {
   "main": {
-    "id": "1de47ccf3d347dd2",
+    "id": "fec76af24174e063",
     "type": "split",
     "children": [
       {
-        "id": "13892bfb863fed38",
+        "id": "b0ec821e7582c714",
         "type": "tabs",
         "children": [
           {
-            "id": "85d308d3a4fcaa0f",
+            "id": "6269ba5cc2cc1e18",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Class .json/Class rep.js.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -25,15 +21,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "68e9594330161b87",
+    "id": "47f673a4898b79f2",
     "type": "split",
     "children": [
       {
-        "id": "bf926783ec6c9b0c",
+        "id": "8c65721de923c0f1",
         "type": "tabs",
         "children": [
           {
-            "id": "7291e7f2813fb52f",
+            "id": "545ff6f0150a28cd",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -43,7 +39,7 @@
             }
           },
           {
-            "id": "aa6b45714c443ada",
+            "id": "512d1133633c249e",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -58,7 +54,7 @@
             }
           },
           {
-            "id": "09a0f1091d488b79",
+            "id": "692fb9c9c884cdfc",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -72,20 +68,19 @@
     "width": 300
   },
   "right": {
-    "id": "469214ade61548b1",
+    "id": "cf896f222d8b7396",
     "type": "split",
     "children": [
       {
-        "id": "94b2fbe78be729ba",
+        "id": "29306b8d7064d7f7",
         "type": "tabs",
         "children": [
           {
-            "id": "d470add9f09b0be3",
+            "id": "70ac8287ad44c0cb",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Class .json/Class rep.js.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,19 +92,18 @@
             }
           },
           {
-            "id": "cea8bae1f66e4703",
+            "id": "bc0e99687972a3f9",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Class .json/Class rep.js.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
             }
           },
           {
-            "id": "0616fd943393deda",
+            "id": "b67334607f3fb3a9",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -120,13 +114,11 @@
             }
           },
           {
-            "id": "e9714e9329bca8f2",
+            "id": "0bd285a5fd460ae6",
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Class .json/Class rep.js.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -146,20 +138,6 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "85d308d3a4fcaa0f",
-  "lastOpenFiles": [
-    "Class .json/Class reps.js.md",
-    "Class .json/Class bar.js.md",
-    "2024-03-19.md",
-    "Class .js/Class lol.js.md",
-    "Filestructure/Folder thacypherbot-main.md",
-    "2024-03-12.md",
-    "Documentation contribution diary/2024-03-09.md",
-    "Documentation contribution diary",
-    "The Cypher.md",
-    "Class .json/Class package.json.md",
-    "Class .json/Class example.config.json.md",
-    "Class .json/Class package-lock.json.md",
-    "Class .json/Class audio.json.md"
-  ]
+  "active": "6269ba5cc2cc1e18",
+  "lastOpenFiles": []
 }

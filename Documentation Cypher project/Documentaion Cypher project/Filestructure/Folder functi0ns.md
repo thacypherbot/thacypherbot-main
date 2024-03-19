@@ -1,0 +1,1 @@
+Folder that contains .js classes, 0 instead of o in titlename due to questionable naming by previous dev. It is placed in [[Folder thacypherbot-main]]

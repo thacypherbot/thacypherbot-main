@@ -1,0 +1,1 @@
+Folder that contains .js files classes it's placed within [[Folder thacypherbot-main]]
